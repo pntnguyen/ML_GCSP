@@ -1,0 +1,25 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Machine Learning Algorithm term project"
+  author: "Nguyen The Nguyen PHAM"
+  date: today
+  chapters:
+    - index.qmd
+    - proposal.qmd
+    - analysis.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+
+warning: false
+message: false
+
+

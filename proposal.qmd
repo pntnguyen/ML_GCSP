@@ -1,0 +1,43 @@
+# Proposal
+
+## Context
+Our team has 2 peoples from 2 background: public health and biomedical science.  So we want each of us can apply the knownledge from this course into each member's field.
+
+We plan to use the clinical and gene expression data
+
+## Research question
+
+Main research question
+    - Does gene-expression information improve the prediction of overall survival beyond clinical characteristics in breast cancer patients?
+
+Secondary research question
+    - If gene-expression information improves prediction, how many gene-expression features are needed to retain comparable predictive performance?
+
+Clinical
+
+    - Logistic regression
+    - L1/L2 regularization
+    - Decision tree / Random Forest
+    - SVM
+
+Gene expression
+
+    - Logistic + L1/L2
+    - SVM
+    - Tree ensemble
+    - PCA → Logistic/SVM 
+
+## Variables selection
+
+The Nottingham Prognostic Index (NPI) was used as a composite prognostic variable instead of its individual components because several of the component variables had substantial missingness. This allowed us to retain prognostic information while reducing the impact of missing data and the number of predictors.
+
+## Data prcocessing
+
+Should do the normalization for age of diagnosis.
+
+Cross-validation on x-train should be used to choose the hyperparameters.
+
+## Note to ask Mai
+
+PAM50: pam50_+_claudin-low_subtype. Được test như thế nào, nó là biến về gene-expression phải không?
+

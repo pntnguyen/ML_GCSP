@@ -1,0 +1,20 @@
+{
+  "index.qmd": {
+    "index.html": "4e64e312"
+  },
+  "intro.qmd": {
+    "intro.html": "5dff2c31"
+  },
+  "summary.qmd": {
+    "summary.html": "1e8aaf29"
+  },
+  "references.qmd": {
+    "references.html": "8b755726"
+  },
+  "proposal.qmd": {
+    "proposal.html": "ddd56008"
+  },
+  "analysis.qmd": {
+    "analysis.html": "14ee3bd5"
+  }
+}
