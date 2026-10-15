@@ -63,8 +63,8 @@
     "objectID": "proposal.html#research-question",
     "href": "proposal.html#research-question",
     "title": "2  Proposal",
-    "section": "2.2 Research question",
-    "text": "2.2 Research question\nMain research question - Does gene-expression information improve the prediction of overall survival beyond clinical characteristics in breast cancer patients?\nSecondary research question - If gene-expression information improves prediction, how many gene-expression features are needed to retain comparable predictive performance?\nClinical\n- Logistic regression\n- L1/L2 regularization\n- Decision tree / Random Forest\n- SVM\nGene expression\n- Logistic + L1/L2\n- SVM\n- Tree ensemble\n- PCA → Logistic/SVM",
+    "section": "2.3 Research question",
+    "text": "2.3 Research question\nMain research question - Does gene-expression information improve the prediction of overall survival beyond clinical characteristics in breast cancer patients?\nSecondary research question - If gene-expression information improves prediction, how many gene-expression features are needed to retain comparable predictive performance?\nClinical\n- Logistic regression\n- L1/L2 regularization\n- Decision tree / Random Forest\n- SVM\nGene expression\n- Logistic + L1/L2\n- SVM\n- Tree ensemble\n- PCA → Logistic/SVM",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Proposal</span>"
     ]
@@ -73,8 +73,8 @@
     "objectID": "proposal.html#variables-selection",
     "href": "proposal.html#variables-selection",
     "title": "2  Proposal",
-    "section": "2.3 Variables selection",
-    "text": "2.3 Variables selection\nThe Nottingham Prognostic Index (NPI) was used as a composite prognostic variable instead of its individual components because several of the component variables had substantial missingness. This allowed us to retain prognostic information while reducing the impact of missing data and the number of predictors.",
+    "section": "2.4 Variables selection",
+    "text": "2.4 Variables selection\nThe Nottingham Prognostic Index (NPI) was used as a composite prognostic variable instead of its individual components because several of the component variables had substantial missingness. This allowed us to retain prognostic information while reducing the impact of missing data and the number of predictors.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Proposal</span>"
     ]
@@ -83,8 +83,8 @@
     "objectID": "proposal.html#data-prcocessing",
     "href": "proposal.html#data-prcocessing",
     "title": "2  Proposal",
-    "section": "2.4 Data prcocessing",
-    "text": "2.4 Data prcocessing\nShould do the normalization for age of diagnosis.\nCross-validation on x-train should be used to choose the hyperparameters.",
+    "section": "2.5 Data prcocessing",
+    "text": "2.5 Data prcocessing\nShould do the normalization for age of diagnosis.\nCross-validation on x-train should be used to choose the hyperparameters.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Proposal</span>"
     ]
@@ -93,8 +93,58 @@
     "objectID": "proposal.html#note-to-ask-mai",
     "href": "proposal.html#note-to-ask-mai",
     "title": "2  Proposal",
-    "section": "2.5 Note to ask Mai",
-    "text": "2.5 Note to ask Mai\nPAM50: pam50_+_claudin-low_subtype. Được test như thế nào, nó là biến về gene-expression phải không?",
+    "section": "2.6 Note to ask Mai",
+    "text": "2.6 Note to ask Mai\nPAM50: pam50_+_claudin-low_subtype. Được test như thế nào, nó là biến về gene-expression phải không?",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Proposal</span>"
+    ]
+  },
+  {
+    "objectID": "analysis.html",
+    "href": "analysis.html",
+    "title": "3  Analysis",
+    "section": "",
+    "text": "3.1 Data Preprocessing\nimport mglearn\nimport pandas as pd\nimport numpy as np\nimport os\nimport matplotlib.pyplot as plt\nImport data\ndata = pd.read_csv(\"./data/METABRIC_RNA_Mutation.csv\")\n\nclinical_documented_cols = data.columns[:31].tolist()\nmutation_cols = [c for c in data.columns if c.lower().endswith(\"_mut\")]\nexpression_cols = [\n    c for c in data.columns[31:]\n    if c not in mutation_cols\n]\nExtract clinical, and expression data. We exclude exclude tumor stage because it have many missing values. We selected age_at_diagnosis, nottingham_prognostic_index categorical, er_status, her2_status, pr_status.\nThe nottingham_prognostic_index categorical is continuous data, so we convert it to categorical data, and then create dummy variables for it.\nnpi_cat = pd.cut(\n    data[\"nottingham_prognostic_index\"],\n    bins=[-np.inf, 2.4, 3.4, 4.4, 5.4, np.inf],\n    labels=[\"excellent\", \"good\", \"moderate_1\", \"moderate_2\", \"poor\"],\n    right=True,\n)\nnpi_dummies = pd.get_dummies(npi_cat, prefix=\"npi\", dtype=int)\nnpi_dummies.head()\n\n\n\n\n\n\n\n\nnpi_excellent\nnpi_good\nnpi_moderate_1\nnpi_moderate_2\nnpi_poor\n\n\n\n\n0\n0\n0\n0\n0\n1\n\n\n1\n0\n0\n1\n0\n0\n\n\n2\n0\n0\n1\n0\n0\n\n\n3\n0\n0\n1\n0\n0\n\n\n4\n0\n0\n0\n0\n1\nThe status variables are categorical, so we create binary variables for them.\ndata[[\"er_status\", \"pr_status\", \"her2_status\"]] = data[[\"er_status\", \"pr_status\", \"her2_status\"]].replace({\"Negative\": 0, \"Positive\": 1})\ndata[[\"er_status\", \"pr_status\", \"her2_status\"]].head()\n\n\n\n\n\n\n\n\ner_status\npr_status\nher2_status\n\n\n\n\n0\n1\n0\n0\n\n\n1\n1\n1\n0\n\n\n2\n1\n1\n0\n\n\n3\n1\n1\n0\n\n\n4\n1\n1\n0\nSelect the clinical variables variables.\nselected_clinical = [\"age_at_diagnosis\", \"er_status\", \"pr_status\", \"her2_status\"]\n## combine the selected clinical variables and NPI dummies into a single dataframe\nX = pd.concat([data[selected_clinical], npi_dummies], axis=1)\nThe outcome are overall survival, which is a binary variable. But it is currently coded as 1 for survived and 0 for died. We create a new variable surv that is 0 if the patient survived and 1 if the patient died.\ndata[\"surv\"] = np.where(data[\"overall_survival\"] == 1, 0, 1)\n## select the binary outcome\nY = data[\"surv\"]\nTraining and testing split\nfrom sklearn.model_selection import train_test_split \n\n## split the data into training and testing sets\nX_train, X_test, y_train, y_test = train_test_split(X, Y, random_state=0)\nHowever, the age_at_diagnosis variable is continuous, and the other variables are binary. We need to normalize the continuous variable. So we slect min-max normalization to scale the age_at_diagnosis variable to the range [0, 1].\nBefore scaling\nprint(\"Min age at diagnosis:\", X_train[\"age_at_diagnosis\"].min(), \"Max age at diagnosis:\", X_train[\"age_at_diagnosis\"].max())\n\nMin age at diagnosis: 21.93 Max age at diagnosis: 96.29\nScaling\nfrom sklearn.preprocessing import MinMaxScaler\nscaler = MinMaxScaler()\n\nX_train = X_train.copy()\nX_test = X_test.copy()\n\nX_train[[\"age_at_diagnosis\"]] = scaler.fit_transform(X_train[[\"age_at_diagnosis\"]])  \nX_test[[\"age_at_diagnosis\"]] = scaler.transform(X_test[[\"age_at_diagnosis\"]])\nAfter scaling\nprint(\"Min age at diagnosis:\", X_train[\"age_at_diagnosis\"].min(), \"Max age at diagnosis:\", X_train[\"age_at_diagnosis\"].max())\n\nMin age at diagnosis: 0.0 Max age at diagnosis: 0.9999999999999998",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "analysis.html#model-with-gene-expression-variables",
+    "href": "analysis.html#model-with-gene-expression-variables",
+    "title": "3  Analysis",
+    "section": "3.3 Model with gene expression variables",
+    "text": "3.3 Model with gene expression variables",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "analysis.html#model-with-clinical-and-gene-expression-variables",
+    "href": "analysis.html#model-with-clinical-and-gene-expression-variables",
+    "title": "3  Analysis",
+    "section": "3.4 Model with clinical and gene expression variables",
+    "text": "3.4 Model with clinical and gene expression variables",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "analysis.html#model-with-clinical-variables",
+    "href": "analysis.html#model-with-clinical-variables",
+    "title": "3  Analysis",
+    "section": "3.2 Model with clinical variables",
+    "text": "3.2 Model with clinical variables\n\n3.2.1 Logistic Regression\n\n## fit logistic regression model\nfrom sklearn.linear_model import LogisticRegression \n\nlogistic_clinical = LogisticRegression(penalty= None).fit(X_train, y_train)\n\nMean accuracy on the training and testing sets\n\nprint('Mean Training Accuracy :',logistic_clinical.score(X_train, y_train))\nprint('Mean Test Accuracy :',logistic_clinical.score(X_test, y_test))\n\nMean Training Accuracy : 0.657563025210084\nMean Test Accuracy : 0.7100840336134454\n\n\n\n\n3.2.2 Lasso Regression\nIn Lasso regression, we use 5-fold cross-validation to select the best regularization parameter.\n\nfrom sklearn.model_selection import cross_val_score, StratifiedKFold\ncv = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)\nC_values = [0.001, 0.01, 0.1, 1, 10, 100]\n\nresults = {}\nfor C in C_values:\n    model = LogisticRegression(penalty='l2', C=C, max_iter=2000)\n    scores = cross_val_score(model, X_train, y_train, cv=cv)\n    results[C] = scores\n    print(f\"C={C:&lt;7} | fold accuracies: {scores.round(3)} | mean: {scores.mean():.3f}\")\n\nbest_C = max(results, key=lambda c: results[c].mean())\nprint(\"Best C by mean CV accuracy:\", best_C)\n\nC=0.001   | fold accuracies: [0.573 0.573 0.573 0.572 0.575] | mean: 0.574\nC=0.01    | fold accuracies: [0.573 0.573 0.573 0.572 0.575] | mean: 0.574\nC=0.1     | fold accuracies: [0.643 0.619 0.633 0.674 0.639] | mean: 0.641\nC=1       | fold accuracies: [0.654 0.612 0.633 0.695 0.656] | mean: 0.650\nC=10      | fold accuracies: [0.657 0.605 0.64  0.688 0.656] | mean: 0.649\nC=100     | fold accuracies: [0.657 0.608 0.636 0.688 0.653] | mean: 0.648\nBest C by mean CV accuracy: 1\n\n\nSo we choose C = 1 as the best regularization parameter. We fit the model with the best regularization parameter and evaluate the model on the training and testing sets.\n\nlogistic_clinical_l2 = LogisticRegression(penalty='l2', C=best_C, max_iter=2000).fit(X_train, y_train)\nprint('Mean Training Accuracy :',logistic_clinical_l2.score(X_train, y_train))\nprint('Mean Test Accuracy :',logistic_clinical_l2.score(X_test, y_test))\n\nMean Training Accuracy : 0.657563025210084\nMean Test Accuracy : 0.7100840336134454",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "proposal.html#aim",
+    "href": "proposal.html#aim",
+    "title": "2  Proposal",
+    "section": "2.2 Aim",
+    "text": "2.2 Aim\n\nApply the algorithms from this course to the data is familiar to us (epidemiology and biomedical science) to answer the research question.\nKnow how to train and test machine learning models using clinical and gene expression data.\nKnow how to evaluate the performance of different machine learning models in predicting overall survival.\nKnow how to demisionality reduction and feature selection can be used to improve the performance of machine learning models.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Proposal</span>"
     ]

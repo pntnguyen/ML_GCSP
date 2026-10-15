@@ -123,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">analysis.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analysis</span></span></a>
   </div>
 </li>
     </ul>
@@ -137,10 +137,11 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#context" id="toc-context" class="nav-link active" data-scroll-target="#context"><span class="header-section-number">2.1</span> Context</a></li>
-  <li><a href="#research-question" id="toc-research-question" class="nav-link" data-scroll-target="#research-question"><span class="header-section-number">2.2</span> Research question</a></li>
-  <li><a href="#variables-selection" id="toc-variables-selection" class="nav-link" data-scroll-target="#variables-selection"><span class="header-section-number">2.3</span> Variables selection</a></li>
-  <li><a href="#data-prcocessing" id="toc-data-prcocessing" class="nav-link" data-scroll-target="#data-prcocessing"><span class="header-section-number">2.4</span> Data prcocessing</a></li>
-  <li><a href="#note-to-ask-mai" id="toc-note-to-ask-mai" class="nav-link" data-scroll-target="#note-to-ask-mai"><span class="header-section-number">2.5</span> Note to ask Mai</a></li>
+  <li><a href="#aim" id="toc-aim" class="nav-link" data-scroll-target="#aim"><span class="header-section-number">2.2</span> Aim</a></li>
+  <li><a href="#research-question" id="toc-research-question" class="nav-link" data-scroll-target="#research-question"><span class="header-section-number">2.3</span> Research question</a></li>
+  <li><a href="#variables-selection" id="toc-variables-selection" class="nav-link" data-scroll-target="#variables-selection"><span class="header-section-number">2.4</span> Variables selection</a></li>
+  <li><a href="#data-prcocessing" id="toc-data-prcocessing" class="nav-link" data-scroll-target="#data-prcocessing"><span class="header-section-number">2.5</span> Data prcocessing</a></li>
+  <li><a href="#note-to-ask-mai" id="toc-note-to-ask-mai" class="nav-link" data-scroll-target="#note-to-ask-mai"><span class="header-section-number">2.6</span> Note to ask Mai</a></li>
   </ul>
 </nav>
     </div>
@@ -171,8 +172,17 @@ ul.task-list li input[type="checkbox"] {
 <p>Our team has 2 peoples from 2 background: public health and biomedical science. So we want each of us can apply the knownledge from this course into each member’s field.</p>
 <p>We plan to use the clinical and gene expression data</p>
 </section>
-<section id="research-question" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="research-question"><span class="header-section-number">2.2</span> Research question</h2>
+<section id="aim" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="aim"><span class="header-section-number">2.2</span> Aim</h2>
+<ul>
+<li><p>Apply the algorithms from this course to the data is familiar to us (epidemiology and biomedical science) to answer the research question.</p></li>
+<li><p>Know how to train and test machine learning models using clinical and gene expression data.</p></li>
+<li><p>Know how to evaluate the performance of different machine learning models in predicting overall survival.</p></li>
+<li><p>Know how to demisionality reduction and feature selection can be used to improve the performance of machine learning models.</p></li>
+</ul>
+</section>
+<section id="research-question" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="research-question"><span class="header-section-number">2.3</span> Research question</h2>
 <p>Main research question - Does gene-expression information improve the prediction of overall survival beyond clinical characteristics in breast cancer patients?</p>
 <p>Secondary research question - If gene-expression information improves prediction, how many gene-expression features are needed to retain comparable predictive performance?</p>
 <p>Clinical</p>
@@ -186,17 +196,17 @@ ul.task-list li input[type="checkbox"] {
 - Tree ensemble
 - PCA → Logistic/SVM </code></pre>
 </section>
-<section id="variables-selection" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="variables-selection"><span class="header-section-number">2.3</span> Variables selection</h2>
+<section id="variables-selection" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="variables-selection"><span class="header-section-number">2.4</span> Variables selection</h2>
 <p>The Nottingham Prognostic Index (NPI) was used as a composite prognostic variable instead of its individual components because several of the component variables had substantial missingness. This allowed us to retain prognostic information while reducing the impact of missing data and the number of predictors.</p>
 </section>
-<section id="data-prcocessing" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="data-prcocessing"><span class="header-section-number">2.4</span> Data prcocessing</h2>
+<section id="data-prcocessing" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="data-prcocessing"><span class="header-section-number">2.5</span> Data prcocessing</h2>
 <p>Should do the normalization for age of diagnosis.</p>
 <p>Cross-validation on x-train should be used to choose the hyperparameters.</p>
 </section>
-<section id="note-to-ask-mai" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="note-to-ask-mai"><span class="header-section-number">2.5</span> Note to ask Mai</h2>
+<section id="note-to-ask-mai" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="note-to-ask-mai"><span class="header-section-number">2.6</span> Note to ask Mai</h2>
 <p>PAM50: pam50_+_claudin-low_subtype. Được test như thế nào, nó là biến về gene-expression phải không?</p>
 
 
@@ -610,8 +620,8 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./analysis.html" class="pagination-link" aria-label="analysis.html">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">analysis.html</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./analysis.html" class="pagination-link" aria-label="Analysis">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

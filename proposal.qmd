@@ -5,6 +5,16 @@ Our team has 2 peoples from 2 background: public health and biomedical science. 
 
 We plan to use the clinical and gene expression data
 
+## Aim
+
+- Apply the algorithms from this course to the data is familiar to us (epidemiology and biomedical science) to answer the research question.
+
+- Know how to train and test machine learning models using clinical and gene expression data.
+
+- Know how to evaluate the performance of different machine learning models in predicting overall survival.
+
+- Know how to demisionality reduction and feature selection can be used to improve the performance of machine learning models.
+
 ## Research question
 
 Main research question

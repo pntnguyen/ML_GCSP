@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>analysis – Machine Learning Algorithm term project</title>
+<title>3&nbsp; Analysis – Machine Learning Algorithm term project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,10 +20,45 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -69,11 +104,17 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
 
 
 </head>
 
-<body class="nav-sidebar floating fullcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -82,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./analysis.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">analysis.html</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./analysis.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analysis</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -122,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./analysis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">analysis.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analysis</span></span></a>
   </div>
 </li>
     </ul>
@@ -130,15 +171,304 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link active" data-scroll-target="#data-preprocessing"><span class="header-section-number">3.1</span> Data Preprocessing</a></li>
+  <li><a href="#model-with-clinical-variables" id="toc-model-with-clinical-variables" class="nav-link" data-scroll-target="#model-with-clinical-variables"><span class="header-section-number">3.2</span> Model with clinical variables</a>
+  <ul class="collapse">
+  <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression"><span class="header-section-number">3.2.1</span> Logistic Regression</a></li>
+  <li><a href="#lasso-regression" id="toc-lasso-regression" class="nav-link" data-scroll-target="#lasso-regression"><span class="header-section-number">3.2.2</span> Lasso Regression</a></li>
+  </ul></li>
+  <li><a href="#model-with-gene-expression-variables" id="toc-model-with-gene-expression-variables" class="nav-link" data-scroll-target="#model-with-gene-expression-variables"><span class="header-section-number">3.3</span> Model with gene expression variables</a></li>
+  <li><a href="#model-with-clinical-and-gene-expression-variables" id="toc-model-with-clinical-and-gene-expression-variables" class="nav-link" data-scroll-target="#model-with-clinical-and-gene-expression-variables"><span class="header-section-number">3.4</span> Model with clinical and gene expression variables</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analysis</span></h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
+
+<section id="data-preprocessing" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="data-preprocessing"><span class="header-section-number">3.1</span> Data Preprocessing</h2>
+<div id="1a05f3c9" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mglearn</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Import data</p>
+<div id="27fce0d4" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">"./data/METABRIC_RNA_Mutation.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>clinical_documented_cols <span class="op">=</span> data.columns[:<span class="dv">31</span>].tolist()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>mutation_cols <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> data.columns <span class="cf">if</span> c.lower().endswith(<span class="st">"_mut"</span>)]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>expression_cols <span class="op">=</span> [</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    c <span class="cf">for</span> c <span class="kw">in</span> data.columns[<span class="dv">31</span>:]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> mutation_cols</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Extract clinical, and expression data. We exclude exclude tumor stage because it have many missing values. We selected <code>age_at_diagnosis</code>, <code>nottingham_prognostic_index categorical</code>, <code>er_status</code>, <code>her2_status</code>, <code>pr_status</code>.</p>
+<p>The <code>nottingham_prognostic_index categorical</code> is continuous data, so we convert it to categorical data, and then create dummy variables for it.</p>
+<div id="7b3eb660" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>npi_cat <span class="op">=</span> pd.cut(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    data[<span class="st">"nottingham_prognostic_index"</span>],</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span>[<span class="op">-</span>np.inf, <span class="fl">2.4</span>, <span class="fl">3.4</span>, <span class="fl">4.4</span>, <span class="fl">5.4</span>, np.inf],</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">"excellent"</span>, <span class="st">"good"</span>, <span class="st">"moderate_1"</span>, <span class="st">"moderate_2"</span>, <span class="st">"poor"</span>],</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>npi_dummies <span class="op">=</span> pd.get_dummies(npi_cat, prefix<span class="op">=</span><span class="st">"npi"</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>npi_dummies.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="121">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">npi_excellent</th>
+<th data-quarto-table-cell-role="th">npi_good</th>
+<th data-quarto-table-cell-role="th">npi_moderate_1</th>
+<th data-quarto-table-cell-role="th">npi_moderate_2</th>
+<th data-quarto-table-cell-role="th">npi_poor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The status variables are categorical, so we create binary variables for them.</p>
+<div id="08beaeac" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data[[<span class="st">"er_status"</span>, <span class="st">"pr_status"</span>, <span class="st">"her2_status"</span>]] <span class="op">=</span> data[[<span class="st">"er_status"</span>, <span class="st">"pr_status"</span>, <span class="st">"her2_status"</span>]].replace({<span class="st">"Negative"</span>: <span class="dv">0</span>, <span class="st">"Positive"</span>: <span class="dv">1</span>})</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data[[<span class="st">"er_status"</span>, <span class="st">"pr_status"</span>, <span class="st">"her2_status"</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="122">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">er_status</th>
+<th data-quarto-table-cell-role="th">pr_status</th>
+<th data-quarto-table-cell-role="th">her2_status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Select the clinical variables variables.</p>
+<div id="5057d857" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>selected_clinical <span class="op">=</span> [<span class="st">"age_at_diagnosis"</span>, <span class="st">"er_status"</span>, <span class="st">"pr_status"</span>, <span class="st">"her2_status"</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">## combine the selected clinical variables and NPI dummies into a single dataframe</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.concat([data[selected_clinical], npi_dummies], axis<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The outcome are overall survival, which is a binary variable. But it is currently coded as 1 for survived and 0 for died. We create a new variable <code>surv</code> that is 0 if the patient survived and 1 if the patient died.</p>
+<div id="a1f6677f" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data[<span class="st">"surv"</span>] <span class="op">=</span> np.where(data[<span class="st">"overall_survival"</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">## select the binary outcome</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> data[<span class="st">"surv"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Training and testing split</p>
+<div id="1e9be5b8" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">## split the data into training and testing sets</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, Y, random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>However, the <code>age_at_diagnosis</code> variable is continuous, and the other variables are binary. We need to normalize the continuous variable. So we slect min-max normalization to scale the <code>age_at_diagnosis</code> variable to the range [0, 1].</p>
+<p>Before scaling</p>
+<div id="3cf46875" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Min age at diagnosis:"</span>, X_train[<span class="st">"age_at_diagnosis"</span>].<span class="bu">min</span>(), <span class="st">"Max age at diagnosis:"</span>, X_train[<span class="st">"age_at_diagnosis"</span>].<span class="bu">max</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Min age at diagnosis: 21.93 Max age at diagnosis: 96.29</code></pre>
+</div>
+</div>
+<p>Scaling</p>
+<div id="5e6b18e0" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> MinMaxScaler()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.copy()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.copy()</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>X_train[[<span class="st">"age_at_diagnosis"</span>]] <span class="op">=</span> scaler.fit_transform(X_train[[<span class="st">"age_at_diagnosis"</span>]])  </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>X_test[[<span class="st">"age_at_diagnosis"</span>]] <span class="op">=</span> scaler.transform(X_test[[<span class="st">"age_at_diagnosis"</span>]])        </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>After scaling</p>
+<div id="0653d59a" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Min age at diagnosis:"</span>, X_train[<span class="st">"age_at_diagnosis"</span>].<span class="bu">min</span>(), <span class="st">"Max age at diagnosis:"</span>, X_train[<span class="st">"age_at_diagnosis"</span>].<span class="bu">max</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Min age at diagnosis: 0.0 Max age at diagnosis: 0.9999999999999998</code></pre>
+</div>
+</div>
+</section>
+<section id="model-with-clinical-variables" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="model-with-clinical-variables"><span class="header-section-number">3.2</span> Model with clinical variables</h2>
+<section id="logistic-regression" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="logistic-regression"><span class="header-section-number">3.2.1</span> Logistic Regression</h3>
+<div id="52174d8b" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">## fit logistic regression model</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>logistic_clinical <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span> <span class="va">None</span>).fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Mean accuracy on the training and testing sets</p>
+<div id="fe2ced52" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Training Accuracy :'</span>,logistic_clinical.score(X_train, y_train))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Test Accuracy :'</span>,logistic_clinical.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean Training Accuracy : 0.657563025210084
+Mean Test Accuracy : 0.7100840336134454</code></pre>
+</div>
+</div>
+</section>
+<section id="lasso-regression" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="lasso-regression"><span class="header-section-number">3.2.2</span> Lasso Regression</h3>
+<p>In Lasso regression, we use 5-fold cross-validation to select the best regularization parameter.</p>
+<div id="b51ae07f" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score, StratifiedKFold</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>C_values <span class="op">=</span> [<span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>]</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {}</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C <span class="kw">in</span> C_values:</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="st">'l2'</span>, C<span class="op">=</span>C, max_iter<span class="op">=</span><span class="dv">2000</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> cross_val_score(model, X_train, y_train, cv<span class="op">=</span>cv)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    results[C] <span class="op">=</span> scores</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"C=</span><span class="sc">{</span>C<span class="sc">:&lt;7}</span><span class="ss"> | fold accuracies: </span><span class="sc">{</span>scores<span class="sc">.</span><span class="bu">round</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="ss"> | mean: </span><span class="sc">{</span>scores<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>best_C <span class="op">=</span> <span class="bu">max</span>(results, key<span class="op">=</span><span class="kw">lambda</span> c: results[c].mean())</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best C by mean CV accuracy:"</span>, best_C)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>C=0.001   | fold accuracies: [0.573 0.573 0.573 0.572 0.575] | mean: 0.574
+C=0.01    | fold accuracies: [0.573 0.573 0.573 0.572 0.575] | mean: 0.574
+C=0.1     | fold accuracies: [0.643 0.619 0.633 0.674 0.639] | mean: 0.641
+C=1       | fold accuracies: [0.654 0.612 0.633 0.695 0.656] | mean: 0.650
+C=10      | fold accuracies: [0.657 0.605 0.64  0.688 0.656] | mean: 0.649
+C=100     | fold accuracies: [0.657 0.608 0.636 0.688 0.653] | mean: 0.648
+Best C by mean CV accuracy: 1</code></pre>
+</div>
+</div>
+<p>So we choose C = 1 as the best regularization parameter. We fit the model with the best regularization parameter and evaluate the model on the training and testing sets.</p>
+<div id="33652bd3" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>logistic_clinical_l2 <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="st">'l2'</span>, C<span class="op">=</span>best_C, max_iter<span class="op">=</span><span class="dv">2000</span>).fit(X_train, y_train)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Training Accuracy :'</span>,logistic_clinical_l2.score(X_train, y_train))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Test Accuracy :'</span>,logistic_clinical_l2.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean Training Accuracy : 0.657563025210084
+Mean Test Accuracy : 0.7100840336134454</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="model-with-gene-expression-variables" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="model-with-gene-expression-variables"><span class="header-section-number">3.3</span> Model with gene expression variables</h2>
+</section>
+<section id="model-with-clinical-and-gene-expression-variables" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="model-with-clinical-and-gene-expression-variables"><span class="header-section-number">3.4</span> Model with clinical and gene expression variables</h2>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

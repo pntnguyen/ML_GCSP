@@ -1,0 +1,149 @@
+# Analysis
+
+## Data Preprocessing
+
+```{python}
+import mglearn
+import pandas as pd
+import numpy as np
+import os
+import matplotlib.pyplot as plt
+```
+
+Import data
+
+```{python}
+data = pd.read_csv("./data/METABRIC_RNA_Mutation.csv")
+
+clinical_documented_cols = data.columns[:31].tolist()
+mutation_cols = [c for c in data.columns if c.lower().endswith("_mut")]
+expression_cols = [
+    c for c in data.columns[31:]
+    if c not in mutation_cols
+]
+```
+
+Extract clinical, and expression data. We exclude exclude tumor stage because it have many missing values. We selected `age_at_diagnosis`, `nottingham_prognostic_index categorical`, `er_status`, `her2_status`, `pr_status`.
+
+The `nottingham_prognostic_index categorical` is continuous data, so we convert it to categorical data, and then create dummy variables for it.
+
+```{python}
+npi_cat = pd.cut(
+    data["nottingham_prognostic_index"],
+    bins=[-np.inf, 2.4, 3.4, 4.4, 5.4, np.inf],
+    labels=["excellent", "good", "moderate_1", "moderate_2", "poor"],
+    right=True,
+)
+npi_dummies = pd.get_dummies(npi_cat, prefix="npi", dtype=int)
+npi_dummies.head()
+```
+
+The status variables are categorical, so we create binary variables for them.
+
+```{python}
+data[["er_status", "pr_status", "her2_status"]] = data[["er_status", "pr_status", "her2_status"]].replace({"Negative": 0, "Positive": 1})
+data[["er_status", "pr_status", "her2_status"]].head()
+```
+
+Select the clinical variables variables.
+
+```{python}
+selected_clinical = ["age_at_diagnosis", "er_status", "pr_status", "her2_status"]
+## combine the selected clinical variables and NPI dummies into a single dataframe
+X = pd.concat([data[selected_clinical], npi_dummies], axis=1)
+```
+
+The outcome are overall survival, which is a binary variable. But it is currently coded as 1 for survived and 0 for died. We create a new variable `surv` that is 0 if the patient survived and 1 if the patient died.
+
+```{python}
+data["surv"] = np.where(data["overall_survival"] == 1, 0, 1)
+## select the binary outcome
+Y = data["surv"]
+```
+
+Training and testing split
+
+```{python}
+from sklearn.model_selection import train_test_split 
+
+## split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, Y, random_state=0)
+```
+
+However, the `age_at_diagnosis` variable is continuous, and the other variables are binary. We need to normalize the continuous variable. So we slect min-max normalization to scale the `age_at_diagnosis` variable to the range [0, 1].
+
+Before scaling
+
+```{python}
+print("Min age at diagnosis:", X_train["age_at_diagnosis"].min(), "Max age at diagnosis:", X_train["age_at_diagnosis"].max())
+```
+
+Scaling
+
+```{python}
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+
+X_train = X_train.copy()
+X_test = X_test.copy()
+
+X_train[["age_at_diagnosis"]] = scaler.fit_transform(X_train[["age_at_diagnosis"]])  
+X_test[["age_at_diagnosis"]] = scaler.transform(X_test[["age_at_diagnosis"]])        
+```
+
+After scaling
+
+```{python}
+print("Min age at diagnosis:", X_train["age_at_diagnosis"].min(), "Max age at diagnosis:", X_train["age_at_diagnosis"].max())
+```
+
+## Model with clinical variables
+
+### Logistic Regression
+
+```{python}
+## fit logistic regression model
+from sklearn.linear_model import LogisticRegression 
+
+logistic_clinical = LogisticRegression(penalty= None).fit(X_train, y_train)
+```
+
+Mean accuracy on the training and testing sets
+
+```{python}
+print('Mean Training Accuracy :',logistic_clinical.score(X_train, y_train))
+print('Mean Test Accuracy :',logistic_clinical.score(X_test, y_test))
+```
+
+### Lasso Regression
+
+In Lasso regression, we use 5-fold cross-validation to select the best regularization parameter. 
+
+```{python}
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)
+C_values = [0.001, 0.01, 0.1, 1, 10, 100]
+
+results = {}
+for C in C_values:
+    model = LogisticRegression(penalty='l2', C=C, max_iter=2000)
+    scores = cross_val_score(model, X_train, y_train, cv=cv)
+    results[C] = scores
+    print(f"C={C:<7} | fold accuracies: {scores.round(3)} | mean: {scores.mean():.3f}")
+
+best_C = max(results, key=lambda c: results[c].mean())
+print("Best C by mean CV accuracy:", best_C)
+```
+
+So we choose C = `{python} best_C` as the best regularization parameter. We fit the model with the best regularization parameter and evaluate the model on the training and testing sets.
+
+```{python}
+logistic_clinical_l2 = LogisticRegression(penalty='l2', C=best_C, max_iter=2000).fit(X_train, y_train)
+print('Mean Training Accuracy :',logistic_clinical_l2.score(X_train, y_train))
+print('Mean Test Accuracy :',logistic_clinical_l2.score(X_test, y_test))
+```
+
+## Model with gene expression variables
+
+## Model with clinical and gene expression variables
+
