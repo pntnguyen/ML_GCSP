@@ -4,7 +4,7 @@ project:
 
 book:
   title: "Machine Learning Algorithm term project"
-  author: "Nguyen The Nguyen PHAM"
+  author: "Nguyen The Nguyen PHAM, Quynh Mai Vu"
   date: today
   chapters:
     - index.qmd

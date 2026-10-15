@@ -60,6 +60,16 @@
     ]
   },
   {
+    "objectID": "proposal.html#aim",
+    "href": "proposal.html#aim",
+    "title": "2  Proposal",
+    "section": "2.2 Aim",
+    "text": "2.2 Aim\n\nApply the algorithms from this course to the data is familiar to us (epidemiology and biomedical science) to answer the research question.\nKnow how to train and test machine learning models using clinical and gene expression data.\nKnow how to evaluate the performance of different machine learning models in predicting overall survival.\nKnow how to demisionality reduction and feature selection can be used to improve the performance of machine learning models.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Proposal</span>"
+    ]
+  },
+  {
     "objectID": "proposal.html#research-question",
     "href": "proposal.html#research-question",
     "title": "2  Proposal",
@@ -110,6 +120,16 @@
     ]
   },
   {
+    "objectID": "analysis.html#model-with-clinical-variables",
+    "href": "analysis.html#model-with-clinical-variables",
+    "title": "3  Analysis",
+    "section": "3.2 Model with clinical variables",
+    "text": "3.2 Model with clinical variables\n\n3.2.1 Logistic Regression\n\n## fit logistic regression model\nfrom sklearn.linear_model import LogisticRegression \n\nlogistic_clinical = LogisticRegression(penalty= None).fit(X_train, y_train)\n\nMean accuracy on the training and testing sets\n\nprint('Training Accuracy :',logistic_clinical.score(X_train, y_train))\nprint('Test Accuracy :',logistic_clinical.score(X_test, y_test))\n\nTraining Accuracy : 0.657563025210084\nTest Accuracy : 0.7100840336134454\n\n\nROC-AUC score on the testing sets\n\nfrom sklearn.metrics import roc_auc_score\n\ny_prob = logistic_clinical.predict_proba(X_test)[:, 1]   # probability of the positive class\nauc = roc_auc_score(y_test, y_prob)\nprint(f\"Test ROC-AUC: {auc:.3f}\")\n\nTest ROC-AUC: 0.748\n\n\n\n\n3.2.2 Lasso Regression\nIn Lasso regression, we use 5-fold cross-validation to select the best regularization parameter.\n\nfrom sklearn.model_selection import cross_val_score, StratifiedKFold\ncv = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)\nC_values = [0.001, 0.01, 0.1, 1, 10, 100]\n\nresults = {}\nfor C in C_values:\n    model = LogisticRegression(penalty='l2', C=C, max_iter=10000)\n    scores = cross_val_score(model, X_train, y_train, cv=cv, scoring=\"roc_auc\")\n    results[C] = scores\n    print(f\"C={C:&lt;7} | fold accuracies: {scores.round(3)} | mean: {scores.mean():.3f}\")\n\nbest_C = max(results, key=lambda c: results[c].mean())\nprint(\"Best C by mean CV accuracy:\", best_C)\n\nC=0.001   | fold accuracies: [0.636 0.638 0.589 0.638 0.623] | mean: 0.625\nC=0.01    | fold accuracies: [0.65  0.649 0.606 0.669 0.632] | mean: 0.641\nC=0.1     | fold accuracies: [0.69  0.664 0.652 0.731 0.668] | mean: 0.681\nC=1       | fold accuracies: [0.694 0.656 0.672 0.743 0.693] | mean: 0.692\nC=10      | fold accuracies: [0.693 0.655 0.674 0.745 0.697] | mean: 0.693\nC=100     | fold accuracies: [0.694 0.655 0.675 0.746 0.697] | mean: 0.693\nBest C by mean CV accuracy: 100\n\n\nSo we choose C = 100 as the best regularization parameter. We fit the model with the best regularization parameter and evaluate the model on the training and testing sets.\n\nlogistic_clinical_l2 = LogisticRegression(penalty='l2', C=best_C, max_iter=10000).fit(X_train, y_train)\nprint('Training Accuracy :',logistic_clinical_l2.score(X_train, y_train))\nprint('Test Accuracy :',logistic_clinical_l2.score(X_test, y_test))\n\nTraining Accuracy : 0.657563025210084\nTest Accuracy : 0.7100840336134454\n\n\nROC-AUC score on the testing sets\n\ny_prob = logistic_clinical_l2.predict_proba(X_test)[:, 1]   # probability of the positive class\nauc = roc_auc_score(y_test, y_prob)\nprint(f\"Test ROC-AUC: {auc:.3f}\")\n\nTest ROC-AUC: 0.748\n\n\n\n\n3.2.3 Random Forest\nWe used 5-fold cross-validation to select the best hyperparameters for the random forest model. We used a grid search to search over a range of hyperparameters, including the number of trees in the forest (n_estimators), the maximum depth of the trees (max_depth), and the minimum number of samples required to split an internal node (min_samples_split), number of samples required to be at a leaf node (min_samples_leaf).\n\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.model_selection import GridSearchCV, StratifiedKFold\nimport joblib\n\nmodel_path = \"models/rf_grid_search.joblib\"\n\nif os.path.exists(model_path):\n    grid_search = joblib.load(model_path)          \nelse:\n    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)\n    rf = RandomForestClassifier(random_state=123)\n\n    param_grid = {\n        \"max_depth\": [5, 10, 15, None],\n        \"min_samples_leaf\": [2, 5, 10, 20],\n        \"min_samples_split\": [5, 10, 20],\n        \"n_estimators\": range(10, 101, 10),\n    }\n\n    grid_search = GridSearchCV(\n        estimator=rf,\n        param_grid=param_grid,\n        cv=cv,\n        scoring=\"roc_auc\",\n        return_train_score=True,\n        n_jobs=-1,                                 \n    )\n    grid_search.fit(X_train, y_train)\n    joblib.dump(grid_search, model_path) \n\nBest hyperparameters\n\nprint(\"Best parameters:\", grid_search.best_params_)\n\nBest parameters: {'max_depth': 5, 'min_samples_leaf': 5, 'min_samples_split': 5, 'n_estimators': 90}\n\n\nPerfromance of random forest model with clinical variables on the training and testing sets\n\nrf_clinical = grid_search.best_estimator_    \nprint(\"Training accuracy:\", rf_clinical.score(X_train, y_train))\nprint(\"Test accuracy:\", rf_clinical.score(X_test, y_test))\n\nTraining accuracy: 0.6827731092436975\nTest accuracy: 0.707983193277311\n\n\nROC-AUC score on the testing sets\n\ny_prob = rf_clinical.predict_proba(X_test)[:, 1]   # probability of the positive class\nauc = roc_auc_score(y_test, y_prob)\nprint(f\"Test ROC-AUC: {auc:.3f}\")\n\nTest ROC-AUC: 0.760\n\n\n\n\n3.2.4 Support Vector Machine\nWe used 5-fold cross-validation to select the best hyperparameters for the support vector machine model. We used a grid search to search over a range of hyperparameters, including the regularization parameter (C), and the gamma type (gamma).\n\nfrom sklearn.svm import SVC\n\nsvc_path = \"models/svc_grid_search.joblib\"\n\nif os.path.exists(svc_path):\n    grid_search_svc = joblib.load(svc_path)\nelse:\n    param_grid = {\n        \"C\": [0.001, 0.01, 0.1, 1, 10, 100],\n        \"gamma\": [0.001, 0.01, 0.1, 1, 10, 100],\n    }\n\n    grid_search_svc = GridSearchCV(\n        SVC(), param_grid, cv=5, scoring=\"roc_auc\",\n        return_train_score=True                     \n    )\n    grid_search_svc.fit(X_train, y_train)\n    joblib.dump(grid_search_svc, svc_path)\n\nBest hyperparameters\n\nprint(\"Best parameters:\", grid_search_svc.best_params_)\n\nBest parameters: {'C': 100, 'gamma': 0.01}\n\n\nPerformance of support vector machine model with clinical variables on the training and testing sets\n\nprint(\"Best ROC-AUC score:\", grid_search_svc.best_score_)\nprint(\"Test set score:\", grid_search_svc.score(X_test, y_test))\n\nBest ROC-AUC score: 0.6958385529832076\nTest set score: 0.7504951584507042\n\n\nROC-AUC score on the testing sets\n\nsvc_clinical = grid_search_svc.best_estimator_\ny_score = svc_clinical.decision_function(X_test)\nauc = roc_auc_score(y_test, y_score)\nprint(f\"Test ROC-AUC: {auc:.3f}\")\n\nTest ROC-AUC: 0.750\n\n\n\nimport matplotlib.pyplot as plt\nfrom sklearn.metrics import RocCurveDisplay\n\nmodels = {\n    \"Logistic (L2)\": logistic_clinical_l2,\n    \"SVC\": svc_clinical,\n    \"Random Forest\": rf_clinical,\n}\n\nfig, ax = plt.subplots(figsize=(7, 6))\nfor name, model in models.items():\n    RocCurveDisplay.from_estimator(model, X_test, y_test, ax=ax, name=name)\n\nax.plot([0, 1], [0, 1], \"k--\", label=\"Chance (AUC = 0.5)\")\nax.legend(loc=\"lower right\")\nax.set_title(\"ROC curves on the test set\")\nplt.show()",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Analysis</span>"
+    ]
+  },
+  {
     "objectID": "analysis.html#model-with-gene-expression-variables",
     "href": "analysis.html#model-with-gene-expression-variables",
     "title": "3  Analysis",
@@ -127,26 +147,6 @@
     "text": "3.4 Model with clinical and gene expression variables",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Analysis</span>"
-    ]
-  },
-  {
-    "objectID": "analysis.html#model-with-clinical-variables",
-    "href": "analysis.html#model-with-clinical-variables",
-    "title": "3  Analysis",
-    "section": "3.2 Model with clinical variables",
-    "text": "3.2 Model with clinical variables\n\n3.2.1 Logistic Regression\n\n## fit logistic regression model\nfrom sklearn.linear_model import LogisticRegression \n\nlogistic_clinical = LogisticRegression(penalty= None).fit(X_train, y_train)\n\nMean accuracy on the training and testing sets\n\nprint('Mean Training Accuracy :',logistic_clinical.score(X_train, y_train))\nprint('Mean Test Accuracy :',logistic_clinical.score(X_test, y_test))\n\nMean Training Accuracy : 0.657563025210084\nMean Test Accuracy : 0.7100840336134454\n\n\n\n\n3.2.2 Lasso Regression\nIn Lasso regression, we use 5-fold cross-validation to select the best regularization parameter.\n\nfrom sklearn.model_selection import cross_val_score, StratifiedKFold\ncv = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)\nC_values = [0.001, 0.01, 0.1, 1, 10, 100]\n\nresults = {}\nfor C in C_values:\n    model = LogisticRegression(penalty='l2', C=C, max_iter=2000)\n    scores = cross_val_score(model, X_train, y_train, cv=cv)\n    results[C] = scores\n    print(f\"C={C:&lt;7} | fold accuracies: {scores.round(3)} | mean: {scores.mean():.3f}\")\n\nbest_C = max(results, key=lambda c: results[c].mean())\nprint(\"Best C by mean CV accuracy:\", best_C)\n\nC=0.001   | fold accuracies: [0.573 0.573 0.573 0.572 0.575] | mean: 0.574\nC=0.01    | fold accuracies: [0.573 0.573 0.573 0.572 0.575] | mean: 0.574\nC=0.1     | fold accuracies: [0.643 0.619 0.633 0.674 0.639] | mean: 0.641\nC=1       | fold accuracies: [0.654 0.612 0.633 0.695 0.656] | mean: 0.650\nC=10      | fold accuracies: [0.657 0.605 0.64  0.688 0.656] | mean: 0.649\nC=100     | fold accuracies: [0.657 0.608 0.636 0.688 0.653] | mean: 0.648\nBest C by mean CV accuracy: 1\n\n\nSo we choose C = 1 as the best regularization parameter. We fit the model with the best regularization parameter and evaluate the model on the training and testing sets.\n\nlogistic_clinical_l2 = LogisticRegression(penalty='l2', C=best_C, max_iter=2000).fit(X_train, y_train)\nprint('Mean Training Accuracy :',logistic_clinical_l2.score(X_train, y_train))\nprint('Mean Test Accuracy :',logistic_clinical_l2.score(X_test, y_test))\n\nMean Training Accuracy : 0.657563025210084\nMean Test Accuracy : 0.7100840336134454",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Analysis</span>"
-    ]
-  },
-  {
-    "objectID": "proposal.html#aim",
-    "href": "proposal.html#aim",
-    "title": "2  Proposal",
-    "section": "2.2 Aim",
-    "text": "2.2 Aim\n\nApply the algorithms from this course to the data is familiar to us (epidemiology and biomedical science) to answer the research question.\nKnow how to train and test machine learning models using clinical and gene expression data.\nKnow how to evaluate the performance of different machine learning models in predicting overall survival.\nKnow how to demisionality reduction and feature selection can be used to improve the performance of machine learning models.",
-    "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Proposal</span>"
     ]
   }
 ]

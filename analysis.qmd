@@ -111,8 +111,18 @@ logistic_clinical = LogisticRegression(penalty= None).fit(X_train, y_train)
 Mean accuracy on the training and testing sets
 
 ```{python}
-print('Mean Training Accuracy :',logistic_clinical.score(X_train, y_train))
-print('Mean Test Accuracy :',logistic_clinical.score(X_test, y_test))
+print('Training Accuracy :',logistic_clinical.score(X_train, y_train))
+print('Test Accuracy :',logistic_clinical.score(X_test, y_test))
+```
+
+ROC-AUC score on the testing sets 
+
+```{python}
+from sklearn.metrics import roc_auc_score
+
+y_prob = logistic_clinical.predict_proba(X_test)[:, 1]   # probability of the positive class
+auc = roc_auc_score(y_test, y_prob)
+print(f"Test ROC-AUC: {auc:.3f}")
 ```
 
 ### Lasso Regression
@@ -126,8 +136,8 @@ C_values = [0.001, 0.01, 0.1, 1, 10, 100]
 
 results = {}
 for C in C_values:
-    model = LogisticRegression(penalty='l2', C=C, max_iter=2000)
-    scores = cross_val_score(model, X_train, y_train, cv=cv)
+    model = LogisticRegression(penalty='l2', C=C, max_iter=10000)
+    scores = cross_val_score(model, X_train, y_train, cv=cv, scoring="roc_auc")
     results[C] = scores
     print(f"C={C:<7} | fold accuracies: {scores.round(3)} | mean: {scores.mean():.3f}")
 
@@ -138,9 +148,143 @@ print("Best C by mean CV accuracy:", best_C)
 So we choose C = `{python} best_C` as the best regularization parameter. We fit the model with the best regularization parameter and evaluate the model on the training and testing sets.
 
 ```{python}
-logistic_clinical_l2 = LogisticRegression(penalty='l2', C=best_C, max_iter=2000).fit(X_train, y_train)
-print('Mean Training Accuracy :',logistic_clinical_l2.score(X_train, y_train))
-print('Mean Test Accuracy :',logistic_clinical_l2.score(X_test, y_test))
+logistic_clinical_l2 = LogisticRegression(penalty='l2', C=best_C, max_iter=10000).fit(X_train, y_train)
+print('Training Accuracy :',logistic_clinical_l2.score(X_train, y_train))
+print('Test Accuracy :',logistic_clinical_l2.score(X_test, y_test))
+```
+
+ROC-AUC score on the testing sets 
+
+```{python}
+y_prob = logistic_clinical_l2.predict_proba(X_test)[:, 1]   # probability of the positive class
+auc = roc_auc_score(y_test, y_prob)
+print(f"Test ROC-AUC: {auc:.3f}")
+```
+
+### Random Forest
+
+We used 5-fold cross-validation to select the best hyperparameters for the random forest model. We used a grid search to search over a range of hyperparameters, including the number of trees in the forest (`n_estimators`), the maximum depth of the trees (`max_depth`), and the minimum number of samples required to split an internal node (`min_samples_split`), number of samples required to be at a leaf node (`min_samples_leaf`).
+
+```{python}
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
+import joblib
+
+model_path = "models/rf_grid_search.joblib"
+
+if os.path.exists(model_path):
+    grid_search = joblib.load(model_path)          
+else:
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)
+    rf = RandomForestClassifier(random_state=123)
+
+    param_grid = {
+        "max_depth": [5, 10, 15, None],
+        "min_samples_leaf": [2, 5, 10, 20],
+        "min_samples_split": [5, 10, 20],
+        "n_estimators": range(10, 101, 10),
+    }
+
+    grid_search = GridSearchCV(
+        estimator=rf,
+        param_grid=param_grid,
+        cv=cv,
+        scoring="roc_auc",
+        return_train_score=True,
+        n_jobs=-1,                                 
+    )
+    grid_search.fit(X_train, y_train)
+    joblib.dump(grid_search, model_path) 
+```
+
+Best hyperparameters
+
+```{python}
+print("Best parameters:", grid_search.best_params_)
+```
+
+Perfromance of random forest model with clinical variables on the training and testing sets
+
+```{python}
+rf_clinical = grid_search.best_estimator_    
+print("Training accuracy:", rf_clinical.score(X_train, y_train))
+print("Test accuracy:", rf_clinical.score(X_test, y_test))
+```
+
+ROC-AUC score on the testing sets 
+
+```{python}
+y_prob = rf_clinical.predict_proba(X_test)[:, 1]   # probability of the positive class
+auc = roc_auc_score(y_test, y_prob)
+print(f"Test ROC-AUC: {auc:.3f}")
+```
+
+### Support Vector Machine
+
+We used 5-fold cross-validation to select the best hyperparameters for the support vector machine model. We used a grid search to search over a range of hyperparameters, including the regularization parameter (`C`), and the gamma type (`gamma`).
+
+```{python}
+from sklearn.svm import SVC
+
+svc_path = "models/svc_grid_search.joblib"
+
+if os.path.exists(svc_path):
+    grid_search_svc = joblib.load(svc_path)
+else:
+    param_grid = {
+        "C": [0.001, 0.01, 0.1, 1, 10, 100],
+        "gamma": [0.001, 0.01, 0.1, 1, 10, 100],
+    }
+
+    grid_search_svc = GridSearchCV(
+        SVC(), param_grid, cv=5, scoring="roc_auc",
+        return_train_score=True                     
+    )
+    grid_search_svc.fit(X_train, y_train)
+    joblib.dump(grid_search_svc, svc_path)
+```
+
+Best hyperparameters
+
+```{python}
+print("Best parameters:", grid_search_svc.best_params_)
+```
+
+Performance of support vector machine model with clinical variables on the training and testing sets
+
+```{python}
+print("Best ROC-AUC score:", grid_search_svc.best_score_)
+print("Test set score:", grid_search_svc.score(X_test, y_test))
+```
+
+ROC-AUC score on the testing sets 
+
+```{python}
+svc_clinical = grid_search_svc.best_estimator_
+y_score = svc_clinical.decision_function(X_test)
+auc = roc_auc_score(y_test, y_score)
+print(f"Test ROC-AUC: {auc:.3f}")
+```
+
+
+```{python}
+import matplotlib.pyplot as plt
+from sklearn.metrics import RocCurveDisplay
+
+models = {
+    "Logistic (L2)": logistic_clinical_l2,
+    "SVC": svc_clinical,
+    "Random Forest": rf_clinical,
+}
+
+fig, ax = plt.subplots(figsize=(7, 6))
+for name, model in models.items():
+    RocCurveDisplay.from_estimator(model, X_test, y_test, ax=ax, name=name)
+
+ax.plot([0, 1], [0, 1], "k--", label="Chance (AUC = 0.5)")
+ax.legend(loc="lower right")
+ax.set_title("ROC curves on the test set")
+plt.show()
 ```
 
 ## Model with gene expression variables
