@@ -337,13 +337,6 @@ auc = roc_auc_score(y_test, y_prob)
 print(f"Test ROC-AUC: {auc:.3f}")
 ```
 
-
-::: {.callout-note}
-
-In high dimensional data (Expression data), the Lasso regression will improve the performance of the Logistic regression model rather than the low dimensional data (Clinical data).
-
-:::
-
 ### Random Forest
 
 ```{python}
@@ -578,7 +571,7 @@ auc = roc_auc_score(y_test, y_score)
 print(f"Test ROC-AUC: {auc:.3f}")
 ```
 
-Visulization
+Visualization
 
 ```{python}
 models = {
@@ -661,6 +654,16 @@ plt.close(fig)
 
 ![](./figs/roc_facets.png)
 
+
+::: {.callout-note}
+
+- Clinical only models are better than gene expression only and combined models
+
+- Combined model still not increase the prediction performance: AUC of combined random forest is 0.746, while RF of clinical is 0.76
+
+:::
+
+
 ### Score
 
 ```{python}
@@ -719,6 +722,14 @@ plt.close(fig)
 ```
 
 ![](./figs/accuracy_train_vs_test.png)
+
+
+::: {.callout-note}
+
+- In high dimensional data (Expressions and combined data), the Lasso regression will improve the performance of the Logistic regression model rather than the low dimensional data (Clinical data).
+
+:::
+
 
 ### Accuracy different between trainning and testing set
 
