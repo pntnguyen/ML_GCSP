@@ -458,16 +458,15 @@ X_combined_test = pd.concat([X_test, X_expression_test], axis=1)
 ### Logistic Regression
 
 ```{python}
-logistic_clinical_expression = LogisticRegression(penalty=None, max_iter=10000).fit(X_combined_train, y_train)
+logistic_combined = LogisticRegression(penalty=None, max_iter=10000).fit(X_combined_train, y_train)
 ```
 
 ```{python}
-print('Mean Training Accuracy :',logistic_clinical_expression.score(X_combined_train, y_train))
-print('Mean Test Accuracy :',logistic_clinical_expression.score(X_combined_test, y_test))
+print('Mean Training Accuracy :',logistic_combined.score(X_combined_train, y_train))
+print('Mean Test Accuracy :',logistic_combined.score(X_combined_test, y_test))
 ```
 
 ### Lasso Regression
-
 
 ```{python}
 cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)
@@ -496,7 +495,7 @@ auc = roc_auc_score(y_test, y_prob)
 print(f"Test ROC-AUC: {auc:.3f}")
 ```
 
-### Randome forest
+### Random forest
 
 ```{python}
 rf_combined_path = "models/rf_combined_grid_search.joblib"
@@ -642,15 +641,15 @@ def plot_roc_facets(facets, y, figsize=(18, 6)):
 
 facets = {
     "Clinical": (
-        {"Logistic (L2)": logistic_clinical_l2, "SVC": svc_clinical, "Random Forest": rf_clinical},
+        {"Logistic": logistic_clinical, "Logistic (L2)": logistic_clinical_l2, "SVC": svc_clinical, "Random Forest": rf_clinical},
         X_test,
     ),
     "Expressions": (
-        {"Logistic (L2)": logistic_expression_l2, "SVC": svc_expression, "Random Forest": rf_expression},
+        {"Logistic": logistic_expression, "Logistic (L2)": logistic_expression_l2, "SVC": svc_expression, "Random Forest": rf_expression},
         X_expression_test,
     ),
     "Combined": (
-        {"Logistic (L2)": logistic_combined_l2, "SVC": svc_combined, "Random Forest": rf_combined},
+        {"Logistic": logistic_combined, "Logistic (L2)": logistic_combined_l2, "SVC": svc_combined, "Random Forest": rf_combined},
         X_combined_test,
     ),
 }
@@ -667,12 +666,15 @@ plt.close(fig)
 ```{python}
 # (model, train features, test features) for each combination
 runs = {
+    ("Clinical", "Logistic"):         (logistic_clinical,      X_train,             X_test),
     ("Clinical", "Logistic (L2)"):    (logistic_clinical_l2,   X_train,             X_test),
     ("Clinical", "SVC"):              (svc_clinical,           X_train,             X_test),
     ("Clinical", "Random Forest"):    (rf_clinical,            X_train,             X_test),
+    ("Expressions", "Logistic"):      (logistic_expression,    X_expression_train,  X_expression_test),
     ("Expressions", "Logistic (L2)"): (logistic_expression_l2, X_expression_train,  X_expression_test),
     ("Expressions", "SVC"):           (svc_expression,         X_expression_train,  X_expression_test),
     ("Expressions", "Random Forest"): (rf_expression,          X_expression_train,  X_expression_test),
+    ("Combined", "Logistic"):         (logistic_combined,      X_combined_train,    X_combined_test),
     ("Combined", "Logistic (L2)"):    (logistic_combined_l2,   X_combined_train,    X_combined_test),
     ("Combined", "SVC"):              (svc_combined,           X_combined_train,    X_combined_test),
     ("Combined", "Random Forest"):    (rf_combined,            X_combined_train,    X_combined_test),

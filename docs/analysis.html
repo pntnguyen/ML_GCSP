@@ -195,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#logistic-regression-2" id="toc-logistic-regression-2" class="nav-link" data-scroll-target="#logistic-regression-2"><span class="header-section-number">3.4.1</span> Logistic Regression</a></li>
   <li><a href="#lasso-regression-2" id="toc-lasso-regression-2" class="nav-link" data-scroll-target="#lasso-regression-2"><span class="header-section-number">3.4.2</span> Lasso Regression</a></li>
-  <li><a href="#randome-forest" id="toc-randome-forest" class="nav-link" data-scroll-target="#randome-forest"><span class="header-section-number">3.4.3</span> Randome forest</a></li>
+  <li><a href="#random-forest-2" id="toc-random-forest-2" class="nav-link" data-scroll-target="#random-forest-2"><span class="header-section-number">3.4.3</span> Random forest</a></li>
   <li><a href="#support-vector-machine-2" id="toc-support-vector-machine-2" class="nav-link" data-scroll-target="#support-vector-machine-2"><span class="header-section-number">3.4.4</span> Support Vector Machine</a></li>
   </ul></li>
   <li><a href="#comparision-between-3-models" id="toc-comparision-between-3-models" class="nav-link" data-scroll-target="#comparision-between-3-models"><span class="header-section-number">3.5</span> Comparision between 3 models</a>
@@ -231,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="data-preprocessing" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="data-preprocessing"><span class="header-section-number">3.1</span> Data Preprocessing</h2>
-<div id="cf5d3ff6" class="cell" data-execution_count="1">
+<div id="dc0ad18a" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mglearn</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -249,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> RocCurveDisplay</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Import data</p>
-<div id="80a013de" class="cell" data-execution_count="2">
+<div id="b7357b93" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">"./data/METABRIC_RNA_Mutation.csv"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>clinical_documented_cols <span class="op">=</span> data.columns[:<span class="dv">31</span>].tolist()</span>
@@ -261,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Extract clinical, and expression data. We exclude exclude tumor stage because it have many missing values. We selected <code>age_at_diagnosis</code>, <code>nottingham_prognostic_index categorical</code>, <code>er_status</code>, <code>her2_status</code>, <code>pr_status</code>.</p>
 <p>The <code>nottingham_prognostic_index categorical</code> is continuous data, so we convert it to categorical data, and then create dummy variables for it.</p>
-<div id="0cba0a0f" class="cell" data-execution_count="3">
+<div id="dc7550bc" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>npi_cat <span class="op">=</span> pd.cut(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    data[<span class="st">"nottingham_prognostic_index"</span>],</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span>[<span class="op">-</span>np.inf, <span class="fl">2.4</span>, <span class="fl">3.4</span>, <span class="fl">4.4</span>, <span class="fl">5.4</span>, np.inf],</span>
@@ -270,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>npi_dummies <span class="op">=</span> pd.get_dummies(npi_cat, prefix<span class="op">=</span><span class="st">"npi"</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>npi_dummies.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="62">
 <div>
 
 
@@ -333,10 +333,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The status variables are categorical, so we create binary variables for them.</p>
-<div id="17d87d12" class="cell" data-execution_count="4">
+<div id="74fe6377" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data[[<span class="st">"er_status"</span>, <span class="st">"pr_status"</span>, <span class="st">"her2_status"</span>]] <span class="op">=</span> data[[<span class="st">"er_status"</span>, <span class="st">"pr_status"</span>, <span class="st">"her2_status"</span>]].replace({<span class="st">"Negative"</span>: <span class="dv">0</span>, <span class="st">"Positive"</span>: <span class="dv">1</span>})</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data[[<span class="st">"er_status"</span>, <span class="st">"pr_status"</span>, <span class="st">"her2_status"</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="63">
 <div>
 
 
@@ -387,32 +387,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Select the clinical variables variables.</p>
-<div id="d35f98b4" class="cell" data-execution_count="5">
+<div id="eba9e210" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>selected_clinical <span class="op">=</span> [<span class="st">"age_at_diagnosis"</span>, <span class="st">"er_status"</span>, <span class="st">"pr_status"</span>, <span class="st">"her2_status"</span>]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">## combine the selected clinical variables and NPI dummies into a single dataframe</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.concat([data[selected_clinical], npi_dummies], axis<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The outcome are overall survival, which is a binary variable. But it is currently coded as 1 for survived and 0 for died. We create a new variable <code>surv</code> that is 0 if the patient survived and 1 if the patient died.</p>
-<div id="8230ce03" class="cell" data-execution_count="6">
+<div id="ecfa5238" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data[<span class="st">"surv"</span>] <span class="op">=</span> np.where(data[<span class="st">"overall_survival"</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">## select the binary outcome</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> data[<span class="st">"surv"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Training and testing split</p>
-<div id="0c1a5ecb" class="cell" data-execution_count="7">
+<div id="66ff1560" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">## split the data into training and testing sets</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, Y, random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>However, the <code>age_at_diagnosis</code> variable is continuous, and the other variables are binary. We need to normalize the continuous variable. So we slect min-max normalization to scale the <code>age_at_diagnosis</code> variable to the range [0, 1].</p>
 <p>Before scaling</p>
-<div id="d4429134" class="cell" data-execution_count="8">
+<div id="bbb9552b" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Min age at diagnosis:"</span>, X_train[<span class="st">"age_at_diagnosis"</span>].<span class="bu">min</span>(), <span class="st">"Max age at diagnosis:"</span>, X_train[<span class="st">"age_at_diagnosis"</span>].<span class="bu">max</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Min age at diagnosis: 21.93 Max age at diagnosis: 96.29</code></pre>
 </div>
 </div>
 <p>Scaling</p>
-<div id="5605ffea" class="cell" data-execution_count="9">
+<div id="1175940a" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> MinMaxScaler()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.copy()</span>
@@ -422,7 +422,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>X_test[[<span class="st">"age_at_diagnosis"</span>]] <span class="op">=</span> scaler.transform(X_test[[<span class="st">"age_at_diagnosis"</span>]])        </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>After scaling</p>
-<div id="70b63524" class="cell" data-execution_count="10">
+<div id="2c0cec2f" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Min age at diagnosis:"</span>, X_train[<span class="st">"age_at_diagnosis"</span>].<span class="bu">min</span>(), <span class="st">"Max age at diagnosis:"</span>, X_train[<span class="st">"age_at_diagnosis"</span>].<span class="bu">max</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Min age at diagnosis: 0.0 Max age at diagnosis: 0.9999999999999998</code></pre>
@@ -433,12 +433,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.2" class="anchored" data-anchor-id="model-with-clinical-variables"><span class="header-section-number">3.2</span> Model with clinical variables</h2>
 <section id="logistic-regression" class="level3" data-number="3.2.1">
 <h3 data-number="3.2.1" class="anchored" data-anchor-id="logistic-regression"><span class="header-section-number">3.2.1</span> Logistic Regression</h3>
-<div id="7311d415" class="cell" data-execution_count="11">
+<div id="915afeb5" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">## fit logistic regression model</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>logistic_clinical <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span> <span class="va">None</span>).fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Mean accuracy on the training and testing sets</p>
-<div id="091fbea6" class="cell" data-execution_count="12">
+<div id="cf190a1a" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Training Accuracy :'</span>,logistic_clinical.score(X_train, y_train))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Test Accuracy :'</span>,logistic_clinical.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -447,7 +447,7 @@ Test Accuracy : 0.7100840336134454</code></pre>
 </div>
 </div>
 <p>ROC-AUC score on the testing sets</p>
-<div id="e3eed603" class="cell" data-execution_count="13">
+<div id="a3050134" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> logistic_clinical.predict_proba(X_test)[:, <span class="dv">1</span>]   <span class="co"># probability of the positive class</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test ROC-AUC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -459,7 +459,7 @@ Test Accuracy : 0.7100840336134454</code></pre>
 <section id="lasso-regression" class="level3" data-number="3.2.2">
 <h3 data-number="3.2.2" class="anchored" data-anchor-id="lasso-regression"><span class="header-section-number">3.2.2</span> Lasso Regression</h3>
 <p>In Lasso regression, we use 5-fold cross-validation to select the best regularization parameter.</p>
-<div id="7344592a" class="cell" data-execution_count="14">
+<div id="bc9c7f14" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>C_values <span class="op">=</span> [<span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>]</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -483,7 +483,7 @@ Best C by mean CV accuracy: 100</code></pre>
 </div>
 </div>
 <p>So we choose C = 100 as the best regularization parameter. We fit the model with the best regularization parameter and evaluate the model on the training and testing sets.</p>
-<div id="d9e701dc" class="cell" data-execution_count="15">
+<div id="40d65d7d" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>logistic_clinical_l2 <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="st">'l2'</span>, C<span class="op">=</span>best_C, max_iter<span class="op">=</span><span class="dv">10000</span>).fit(X_train, y_train)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Training Accuracy :'</span>,logistic_clinical_l2.score(X_train, y_train))</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Test Accuracy :'</span>,logistic_clinical_l2.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -493,7 +493,7 @@ Test Accuracy : 0.7100840336134454</code></pre>
 </div>
 </div>
 <p>ROC-AUC score on the testing sets</p>
-<div id="130e13c6" class="cell" data-execution_count="16">
+<div id="2d4837a3" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> logistic_clinical_l2.predict_proba(X_test)[:, <span class="dv">1</span>]   <span class="co"># probability of the positive class</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test ROC-AUC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -505,7 +505,7 @@ Test Accuracy : 0.7100840336134454</code></pre>
 <section id="random-forest" class="level3" data-number="3.2.3">
 <h3 data-number="3.2.3" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">3.2.3</span> Random Forest</h3>
 <p>We used 5-fold cross-validation to select the best hyperparameters for the random forest model. We used a grid search to search over a range of hyperparameters, including the number of trees in the forest (<code>n_estimators</code>), the maximum depth of the trees (<code>max_depth</code>), and the minimum number of samples required to split an internal node (<code>min_samples_split</code>), number of samples required to be at a leaf node (<code>min_samples_leaf</code>).</p>
-<div id="ff9c4c20" class="cell" data-execution_count="17">
+<div id="aa5aae6e" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model_path <span class="op">=</span> <span class="st">"models/rf_grid_search.joblib"</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(model_path):</span>
@@ -533,14 +533,14 @@ Test Accuracy : 0.7100840336134454</code></pre>
 <span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    joblib.dump(grid_search, model_path) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Best hyperparameters</p>
-<div id="a769a103" class="cell" data-execution_count="18">
+<div id="50dade92" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best parameters:"</span>, grid_search.best_params_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Best parameters: {'max_depth': 5, 'min_samples_leaf': 5, 'min_samples_split': 5, 'n_estimators': 90}</code></pre>
 </div>
 </div>
 <p>Perfromance of random forest model with clinical variables on the training and testing sets</p>
-<div id="d8b920a9" class="cell" data-execution_count="19">
+<div id="f2b3788f" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>rf_clinical <span class="op">=</span> grid_search.best_estimator_    </span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training accuracy:"</span>, rf_clinical.score(X_train, y_train))</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test accuracy:"</span>, rf_clinical.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -550,7 +550,7 @@ Test accuracy: 0.707983193277311</code></pre>
 </div>
 </div>
 <p>ROC-AUC score on the testing sets</p>
-<div id="e0c749aa" class="cell" data-execution_count="20">
+<div id="97da4d56" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> rf_clinical.predict_proba(X_test)[:, <span class="dv">1</span>]   <span class="co"># probability of the positive class</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test ROC-AUC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -562,7 +562,7 @@ Test accuracy: 0.707983193277311</code></pre>
 <section id="support-vector-machine" class="level3" data-number="3.2.4">
 <h3 data-number="3.2.4" class="anchored" data-anchor-id="support-vector-machine"><span class="header-section-number">3.2.4</span> Support Vector Machine</h3>
 <p>We used 5-fold cross-validation to select the best hyperparameters for the support vector machine model. We used a grid search to search over a range of hyperparameters, including the regularization parameter (<code>C</code>), and the gamma type (<code>gamma</code>).</p>
-<div id="a3e40b8e" class="cell" data-execution_count="21">
+<div id="70cf110e" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>svc_path <span class="op">=</span> <span class="st">"models/svc_grid_search.joblib"</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(svc_path):</span>
@@ -581,14 +581,14 @@ Test accuracy: 0.707983193277311</code></pre>
 <span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    joblib.dump(grid_search_svc, svc_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Best hyperparameters</p>
-<div id="81e8aa98" class="cell" data-execution_count="22">
+<div id="2d0cf44e" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best parameters:"</span>, grid_search_svc.best_params_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Best parameters: {'C': 100, 'gamma': 0.01}</code></pre>
 </div>
 </div>
 <p>Performance of support vector machine model with clinical variables on the training and testing sets</p>
-<div id="1e801c6a" class="cell" data-execution_count="23">
+<div id="0a7986df" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best ROC-AUC score:"</span>, grid_search_svc.best_score_)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test set score:"</span>, grid_search_svc.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -597,7 +597,7 @@ Test set score: 0.7504951584507042</code></pre>
 </div>
 </div>
 <p>ROC-AUC score on the testing sets</p>
-<div id="f0bccba2" class="cell" data-execution_count="24">
+<div id="8eefe25c" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>svc_clinical <span class="op">=</span> grid_search_svc.best_estimator_</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>y_score <span class="op">=</span> svc_clinical.decision_function(X_test)</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_score)</span>
@@ -606,7 +606,7 @@ Test set score: 0.7504951584507042</code></pre>
 <pre><code>Test ROC-AUC: 0.750</code></pre>
 </div>
 </div>
-<div id="11948bae" class="cell" data-execution_count="25">
+<div id="62e943a6" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Logistic (L2)"</span>: logistic_clinical_l2,</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SVC"</span>: svc_clinical,</span>
@@ -634,7 +634,7 @@ Test set score: 0.7504951584507042</code></pre>
 <section id="model-with-gene-expression-variables" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="model-with-gene-expression-variables"><span class="header-section-number">3.3</span> Model with gene expression variables</h2>
 <p>Data extraction</p>
-<div id="0e52e19b" class="cell" data-execution_count="26">
+<div id="2ae8c426" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>X_expressions <span class="op">=</span> data[expression_cols]</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co">## split the expression data into training and testing sets</span></span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -642,10 +642,10 @@ Test set score: 0.7504951584507042</code></pre>
 </div>
 <section id="logistic-regression-1" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="logistic-regression-1"><span class="header-section-number">3.3.1</span> Logistic Regression</h3>
-<div id="8c21e5aa" class="cell" data-execution_count="27">
+<div id="458390bb" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>logistic_expression <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="va">None</span>, max_iter<span class="op">=</span><span class="dv">10000</span>).fit(X_expression_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="bf94aa2e" class="cell" data-execution_count="28">
+<div id="5b6e7c55" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Training Accuracy :'</span>,logistic_expression.score(X_expression_train, y_train))</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Test Accuracy :'</span>,logistic_expression.score(X_expression_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -653,7 +653,7 @@ Test set score: 0.7504951584507042</code></pre>
 Test Accuracy : 0.6302521008403361</code></pre>
 </div>
 </div>
-<div id="60d16621" class="cell" data-execution_count="29">
+<div id="728a9ed2" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> logistic_expression.predict_proba(X_expression_test)[:, <span class="dv">1</span>]  </span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test ROC-AUC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -664,7 +664,7 @@ Test Accuracy : 0.6302521008403361</code></pre>
 </section>
 <section id="lasso-regression-1" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="lasso-regression-1"><span class="header-section-number">3.3.2</span> Lasso Regression</h3>
-<div id="208e59d2" class="cell" data-execution_count="30">
+<div id="18e99f6a" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>C_values <span class="op">=</span> [<span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>]</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -687,7 +687,7 @@ C=100     | fold accuracies: [0.541 0.53  0.556 0.591 0.603] | mean: 0.564
 Best C by mean CV accuracy: 0.001</code></pre>
 </div>
 </div>
-<div id="c4ceeec4" class="cell" data-execution_count="31">
+<div id="96a69434" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>logistic_expression_l2 <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="st">'l2'</span>, C<span class="op">=</span>best_C, max_iter<span class="op">=</span><span class="dv">10000</span>).fit(X_expression_train, y_train)</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Training Accuracy :'</span>,logistic_expression_l2.score(X_expression_train, y_train))</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Test Accuracy :'</span>,logistic_expression_l2.score(X_expression_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -696,7 +696,7 @@ Best C by mean CV accuracy: 0.001</code></pre>
 Mean Test Accuracy : 0.6764705882352942</code></pre>
 </div>
 </div>
-<div id="d7ec58ff" class="cell" data-execution_count="32">
+<div id="c5abe900" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> logistic_expression_l2.predict_proba(X_expression_test)[:, <span class="dv">1</span>]   <span class="co"># probability of the positive class</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test ROC-AUC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -720,7 +720,7 @@ Note
 </section>
 <section id="random-forest-1" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="random-forest-1"><span class="header-section-number">3.3.3</span> Random Forest</h3>
-<div id="5a5b1571" class="cell" data-execution_count="33">
+<div id="5aeb9eb0" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>rf_ex_path <span class="op">=</span> <span class="st">"models/rf__ex_grid_search.joblib"</span></span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(rf_ex_path):</span>
@@ -747,13 +747,13 @@ Note
 <span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>    grid_search.fit(X_expression_train, y_train)</span>
 <span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>    joblib.dump(grid_search, rf_ex_path) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="823f7cc2" class="cell" data-execution_count="34">
+<div id="1e8bf79c" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best parameters:"</span>, grid_search.best_params_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Best parameters: {'max_depth': 15, 'min_samples_leaf': 10, 'min_samples_split': 5, 'n_estimators': 60}</code></pre>
 </div>
 </div>
-<div id="85d59688" class="cell" data-execution_count="35">
+<div id="74300862" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>rf_expression <span class="op">=</span> grid_search.best_estimator_    </span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training accuracy:"</span>, rf_expression.score(X_expression_train, y_train))</span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test accuracy:"</span>, rf_expression.score(X_expression_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -762,7 +762,7 @@ Note
 Test accuracy: 0.6491596638655462</code></pre>
 </div>
 </div>
-<div id="6ca821a7" class="cell" data-execution_count="36">
+<div id="26cea631" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> rf_expression.predict_proba(X_expression_test)[:, <span class="dv">1</span>]   <span class="co"># probability of the positive class</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
 <span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test ROC-AUC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -773,7 +773,7 @@ Test accuracy: 0.6491596638655462</code></pre>
 </section>
 <section id="support-vector-machine-1" class="level3" data-number="3.3.4">
 <h3 data-number="3.3.4" class="anchored" data-anchor-id="support-vector-machine-1"><span class="header-section-number">3.3.4</span> Support Vector Machine</h3>
-<div id="132e5f2e" class="cell" data-execution_count="37">
+<div id="7450ff1d" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>svc_ex_path <span class="op">=</span> <span class="st">"models/svc_ex_grid_search.joblib"</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(svc_ex_path):</span>
@@ -791,13 +791,13 @@ Test accuracy: 0.6491596638655462</code></pre>
 <span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>    grid_search_svc.fit(X_expression_train, y_train)</span>
 <span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>    joblib.dump(grid_search_svc, svc_ex_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cc5282ae" class="cell" data-execution_count="38">
+<div id="d2966088" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best parameters:"</span>, grid_search_svc.best_params_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Best parameters: {'C': 1, 'gamma': 0.001}</code></pre>
 </div>
 </div>
-<div id="57097b36" class="cell" data-execution_count="39">
+<div id="e6d141fa" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best ROC-AUC score:"</span>, grid_search_svc.best_score_)</span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test set score:"</span>, grid_search_svc.score(X_expression_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -805,7 +805,7 @@ Test accuracy: 0.6491596638655462</code></pre>
 Test set score: 0.7214275234741783</code></pre>
 </div>
 </div>
-<div id="1c7ac4dd" class="cell" data-execution_count="40">
+<div id="49e0c4d3" class="cell" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>svc_expression <span class="op">=</span> grid_search_svc.best_estimator_</span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>y_score <span class="op">=</span> svc_expression.decision_function(X_expression_test)</span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_score)</span>
@@ -815,7 +815,7 @@ Test set score: 0.7214275234741783</code></pre>
 </div>
 </div>
 <p>Visualization</p>
-<div id="9c74e2df" class="cell" data-execution_count="41">
+<div id="d00bf808" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {</span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Logistic (L2)"</span>: logistic_expression_l2,</span>
 <span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SVC"</span>: svc_expression,</span>
@@ -843,18 +843,18 @@ Test set score: 0.7214275234741783</code></pre>
 <section id="model-with-clinical-and-gene-expression-variables" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="model-with-clinical-and-gene-expression-variables"><span class="header-section-number">3.4</span> Model with clinical and gene expression variables</h2>
 <p>Data extraction</p>
-<div id="806f4a32" class="cell" data-execution_count="42">
+<div id="0a97a258" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>X_combined_train <span class="op">=</span> pd.concat([X_train, X_expression_train], axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>X_combined_test <span class="op">=</span> pd.concat([X_test, X_expression_test], axis<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="logistic-regression-2" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="logistic-regression-2"><span class="header-section-number">3.4.1</span> Logistic Regression</h3>
-<div id="ab5f0a06" class="cell" data-execution_count="43">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>logistic_clinical_expression <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="va">None</span>, max_iter<span class="op">=</span><span class="dv">10000</span>).fit(X_combined_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fad19f12" class="cell" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>logistic_combined <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="va">None</span>, max_iter<span class="op">=</span><span class="dv">10000</span>).fit(X_combined_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="239673cf" class="cell" data-execution_count="44">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Training Accuracy :'</span>,logistic_clinical_expression.score(X_combined_train, y_train))</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Test Accuracy :'</span>,logistic_clinical_expression.score(X_combined_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cb353aff" class="cell" data-execution_count="44">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Training Accuracy :'</span>,logistic_combined.score(X_combined_train, y_train))</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Test Accuracy :'</span>,logistic_combined.score(X_combined_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Training Accuracy : 0.8648459383753502
 Mean Test Accuracy : 0.6407563025210085</code></pre>
@@ -863,7 +863,7 @@ Mean Test Accuracy : 0.6407563025210085</code></pre>
 </section>
 <section id="lasso-regression-2" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="lasso-regression-2"><span class="header-section-number">3.4.2</span> Lasso Regression</h3>
-<div id="e85cf1fa" class="cell" data-execution_count="45">
+<div id="ad121120" class="cell" data-execution_count="45">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">123</span>)</span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>C_values <span class="op">=</span> [<span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>]</span>
 <span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -886,7 +886,7 @@ C=100     | fold accuracies: [0.594 0.556 0.587 0.63  0.609] | mean: 0.595
 Best C by mean CV accuracy: 0.001</code></pre>
 </div>
 </div>
-<div id="ca2af29b" class="cell" data-execution_count="46">
+<div id="c9f75c4c" class="cell" data-execution_count="46">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>logistic_combined_l2 <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="st">'l2'</span>, C<span class="op">=</span>best_C, max_iter<span class="op">=</span><span class="dv">10000</span>).fit(X_combined_train, y_train)</span>
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Training Accuracy :'</span>,logistic_combined_l2.score(X_combined_train, y_train))</span>
 <span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Test Accuracy :'</span>,logistic_combined_l2.score(X_combined_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -895,7 +895,7 @@ Best C by mean CV accuracy: 0.001</code></pre>
 Mean Test Accuracy : 0.680672268907563</code></pre>
 </div>
 </div>
-<div id="16ae21b4" class="cell" data-execution_count="47">
+<div id="8a33c224" class="cell" data-execution_count="47">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> logistic_combined_l2.predict_proba(X_combined_test)[:, <span class="dv">1</span>]   <span class="co"># probability of the positive class</span></span>
 <span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
 <span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test ROC-AUC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -904,9 +904,9 @@ Mean Test Accuracy : 0.680672268907563</code></pre>
 </div>
 </div>
 </section>
-<section id="randome-forest" class="level3" data-number="3.4.3">
-<h3 data-number="3.4.3" class="anchored" data-anchor-id="randome-forest"><span class="header-section-number">3.4.3</span> Randome forest</h3>
-<div id="1d42db4f" class="cell" data-execution_count="48">
+<section id="random-forest-2" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="random-forest-2"><span class="header-section-number">3.4.3</span> Random forest</h3>
+<div id="6bbd8c73" class="cell" data-execution_count="48">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>rf_combined_path <span class="op">=</span> <span class="st">"models/rf_combined_grid_search.joblib"</span></span>
 <span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(rf_combined_path):</span>
@@ -933,13 +933,13 @@ Mean Test Accuracy : 0.680672268907563</code></pre>
 <span id="cb76-24"><a href="#cb76-24" aria-hidden="true" tabindex="-1"></a>    grid_search.fit(X_combined_train, y_train)</span>
 <span id="cb76-25"><a href="#cb76-25" aria-hidden="true" tabindex="-1"></a>    joblib.dump(grid_search, rf_combined_path) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="27fc1201" class="cell" data-execution_count="49">
+<div id="ee73455a" class="cell" data-execution_count="49">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best parameters:"</span>, grid_search.best_params_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Best parameters: {'max_depth': 10, 'min_samples_leaf': 5, 'min_samples_split': 20, 'n_estimators': 100}</code></pre>
 </div>
 </div>
-<div id="47465328" class="cell" data-execution_count="50">
+<div id="dcfcf8af" class="cell" data-execution_count="50">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>rf_combined <span class="op">=</span> grid_search.best_estimator_    </span>
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training accuracy:"</span>, rf_combined.score(X_combined_train, y_train))</span>
 <span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test accuracy:"</span>, rf_combined.score(X_combined_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -948,7 +948,7 @@ Mean Test Accuracy : 0.680672268907563</code></pre>
 Test accuracy: 0.6680672268907563</code></pre>
 </div>
 </div>
-<div id="ff8d01e4" class="cell" data-execution_count="51">
+<div id="d8de6f68" class="cell" data-execution_count="51">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> rf_combined.predict_proba(X_combined_test)[:, <span class="dv">1</span>]   <span class="co"># probability of the positive class</span></span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
 <span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test ROC-AUC: </span><span class="sc">{</span>auc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -959,7 +959,7 @@ Test accuracy: 0.6680672268907563</code></pre>
 </section>
 <section id="support-vector-machine-2" class="level3" data-number="3.4.4">
 <h3 data-number="3.4.4" class="anchored" data-anchor-id="support-vector-machine-2"><span class="header-section-number">3.4.4</span> Support Vector Machine</h3>
-<div id="d79497f5" class="cell" data-execution_count="52">
+<div id="fed7de92" class="cell" data-execution_count="52">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>svc_combined_path <span class="op">=</span> <span class="st">"models/svc_combined_grid_search.joblib"</span></span>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(svc_combined_path):</span>
@@ -977,13 +977,13 @@ Test accuracy: 0.6680672268907563</code></pre>
 <span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a>    grid_search_svc.fit(X_combined_train, y_train)</span>
 <span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a>    joblib.dump(grid_search_svc, svc_combined_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="9d028f1a" class="cell" data-execution_count="53">
+<div id="254724d7" class="cell" data-execution_count="53">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best parameters:"</span>, grid_search_svc.best_params_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Best parameters: {'C': 1, 'gamma': 0.001}</code></pre>
 </div>
 </div>
-<div id="202a6c68" class="cell" data-execution_count="54">
+<div id="73c144ab" class="cell" data-execution_count="54">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best ROC-AUC score:"</span>, grid_search_svc.best_score_)</span>
 <span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test set score:"</span>, grid_search_svc.score(X_combined_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -991,7 +991,7 @@ Test accuracy: 0.6680672268907563</code></pre>
 Test set score: 0.7262507335680751</code></pre>
 </div>
 </div>
-<div id="4e16c938" class="cell" data-execution_count="55">
+<div id="5dffa3e3" class="cell" data-execution_count="55">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>svc_combined <span class="op">=</span> grid_search_svc.best_estimator_</span>
 <span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>y_score <span class="op">=</span> svc_combined.decision_function(X_combined_test)</span>
 <span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_score)</span>
@@ -1001,7 +1001,7 @@ Test set score: 0.7262507335680751</code></pre>
 </div>
 </div>
 <p>Visulization</p>
-<div id="d596ad6e" class="cell" data-execution_count="56">
+<div id="735f88ab" class="cell" data-execution_count="56">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {</span>
 <span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Logistic (L2)"</span>: logistic_combined_l2,</span>
 <span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SVC"</span>: svc_combined,</span>
@@ -1030,7 +1030,7 @@ Test set score: 0.7262507335680751</code></pre>
 <h2 data-number="3.5" class="anchored" data-anchor-id="comparision-between-3-models"><span class="header-section-number">3.5</span> Comparision between 3 models</h2>
 <section id="roc-auc" class="level3" data-number="3.5.1">
 <h3 data-number="3.5.1" class="anchored" data-anchor-id="roc-auc"><span class="header-section-number">3.5.1</span> ROC-AUC</h3>
-<div id="175d414d" class="cell" data-execution_count="57">
+<div id="3a1267c7" class="cell" data-execution_count="57">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_score(model, X):</span>
 <span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return continuous scores for ROC, aligning X to the columns the model was fit on."""</span></span>
 <span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reorder/select test columns to exactly match training columns (fixes name/order errors)</span></span>
@@ -1070,15 +1070,15 @@ Test set score: 0.7262507335680751</code></pre>
 <span id="cb91-37"><a href="#cb91-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb91-38"><a href="#cb91-38" aria-hidden="true" tabindex="-1"></a>facets <span class="op">=</span> {</span>
 <span id="cb91-39"><a href="#cb91-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Clinical"</span>: (</span>
-<span id="cb91-40"><a href="#cb91-40" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"Logistic (L2)"</span>: logistic_clinical_l2, <span class="st">"SVC"</span>: svc_clinical, <span class="st">"Random Forest"</span>: rf_clinical},</span>
+<span id="cb91-40"><a href="#cb91-40" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"Logistic"</span>: logistic_clinical, <span class="st">"Logistic (L2)"</span>: logistic_clinical_l2, <span class="st">"SVC"</span>: svc_clinical, <span class="st">"Random Forest"</span>: rf_clinical},</span>
 <span id="cb91-41"><a href="#cb91-41" aria-hidden="true" tabindex="-1"></a>        X_test,</span>
 <span id="cb91-42"><a href="#cb91-42" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb91-43"><a href="#cb91-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Expressions"</span>: (</span>
-<span id="cb91-44"><a href="#cb91-44" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"Logistic (L2)"</span>: logistic_expression_l2, <span class="st">"SVC"</span>: svc_expression, <span class="st">"Random Forest"</span>: rf_expression},</span>
+<span id="cb91-44"><a href="#cb91-44" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"Logistic"</span>: logistic_expression, <span class="st">"Logistic (L2)"</span>: logistic_expression_l2, <span class="st">"SVC"</span>: svc_expression, <span class="st">"Random Forest"</span>: rf_expression},</span>
 <span id="cb91-45"><a href="#cb91-45" aria-hidden="true" tabindex="-1"></a>        X_expression_test,</span>
 <span id="cb91-46"><a href="#cb91-46" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb91-47"><a href="#cb91-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Combined"</span>: (</span>
-<span id="cb91-48"><a href="#cb91-48" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"Logistic (L2)"</span>: logistic_combined_l2, <span class="st">"SVC"</span>: svc_combined, <span class="st">"Random Forest"</span>: rf_combined},</span>
+<span id="cb91-48"><a href="#cb91-48" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"Logistic"</span>: logistic_combined, <span class="st">"Logistic (L2)"</span>: logistic_combined_l2, <span class="st">"SVC"</span>: svc_combined, <span class="st">"Random Forest"</span>: rf_combined},</span>
 <span id="cb91-49"><a href="#cb91-49" aria-hidden="true" tabindex="-1"></a>        X_combined_test,</span>
 <span id="cb91-50"><a href="#cb91-50" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb91-51"><a href="#cb91-51" aria-hidden="true" tabindex="-1"></a>}</span>
@@ -1091,74 +1091,80 @@ Test set score: 0.7262507335680751</code></pre>
 </section>
 <section id="score" class="level3" data-number="3.5.2">
 <h3 data-number="3.5.2" class="anchored" data-anchor-id="score"><span class="header-section-number">3.5.2</span> Score</h3>
-<div id="c4f47738" class="cell" data-execution_count="58">
+<div id="4848cb43" class="cell" data-execution_count="58">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (model, train features, test features) for each combination</span></span>
 <span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>runs <span class="op">=</span> {</span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Clinical"</span>, <span class="st">"Logistic (L2)"</span>):    (logistic_clinical_l2,   X_train,             X_test),</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Clinical"</span>, <span class="st">"SVC"</span>):              (svc_clinical,           X_train,             X_test),</span>
-<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Clinical"</span>, <span class="st">"Random Forest"</span>):    (rf_clinical,            X_train,             X_test),</span>
-<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Expressions"</span>, <span class="st">"Logistic (L2)"</span>): (logistic_expression_l2, X_expression_train,  X_expression_test),</span>
-<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Expressions"</span>, <span class="st">"SVC"</span>):           (svc_expression,         X_expression_train,  X_expression_test),</span>
-<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Expressions"</span>, <span class="st">"Random Forest"</span>): (rf_expression,          X_expression_train,  X_expression_test),</span>
-<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Combined"</span>, <span class="st">"Logistic (L2)"</span>):    (logistic_combined_l2,   X_combined_train,    X_combined_test),</span>
-<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Combined"</span>, <span class="st">"SVC"</span>):              (svc_combined,           X_combined_train,    X_combined_test),</span>
-<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Combined"</span>, <span class="st">"Random Forest"</span>):    (rf_combined,            X_combined_train,    X_combined_test),</span>
-<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
-<span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (features, name), (model, Xtr, Xte) <span class="kw">in</span> runs.items():</span>
-<span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a>    train_acc <span class="op">=</span> model.score(Xtr, y_train)</span>
-<span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a>    test_acc <span class="op">=</span> model.score(Xte, y_test)</span>
-<span id="cb92-18"><a href="#cb92-18" aria-hidden="true" tabindex="-1"></a>    rows.append({</span>
-<span id="cb92-19"><a href="#cb92-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Features"</span>: features,</span>
-<span id="cb92-20"><a href="#cb92-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Model"</span>: name,</span>
-<span id="cb92-21"><a href="#cb92-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Train"</span>: train_acc,</span>
-<span id="cb92-22"><a href="#cb92-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Test"</span>: test_acc,</span>
-<span id="cb92-23"><a href="#cb92-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Gap"</span>: train_acc <span class="op">-</span> test_acc,</span>
-<span id="cb92-24"><a href="#cb92-24" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb92-25"><a href="#cb92-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-26"><a href="#cb92-26" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pd.DataFrame(rows)</span>
-<span id="cb92-27"><a href="#cb92-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores.<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Clinical"</span>, <span class="st">"Logistic"</span>):         (logistic_clinical,      X_train,             X_test),</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Clinical"</span>, <span class="st">"Logistic (L2)"</span>):    (logistic_clinical_l2,   X_train,             X_test),</span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Clinical"</span>, <span class="st">"SVC"</span>):              (svc_clinical,           X_train,             X_test),</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Clinical"</span>, <span class="st">"Random Forest"</span>):    (rf_clinical,            X_train,             X_test),</span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Expressions"</span>, <span class="st">"Logistic"</span>):      (logistic_expression,    X_expression_train,  X_expression_test),</span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Expressions"</span>, <span class="st">"Logistic (L2)"</span>): (logistic_expression_l2, X_expression_train,  X_expression_test),</span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Expressions"</span>, <span class="st">"SVC"</span>):           (svc_expression,         X_expression_train,  X_expression_test),</span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Expressions"</span>, <span class="st">"Random Forest"</span>): (rf_expression,          X_expression_train,  X_expression_test),</span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Combined"</span>, <span class="st">"Logistic"</span>):         (logistic_combined,      X_combined_train,    X_combined_test),</span>
+<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Combined"</span>, <span class="st">"Logistic (L2)"</span>):    (logistic_combined_l2,   X_combined_train,    X_combined_test),</span>
+<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Combined"</span>, <span class="st">"SVC"</span>):              (svc_combined,           X_combined_train,    X_combined_test),</span>
+<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Combined"</span>, <span class="st">"Random Forest"</span>):    (rf_combined,            X_combined_train,    X_combined_test),</span>
+<span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb92-18"><a href="#cb92-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (features, name), (model, Xtr, Xte) <span class="kw">in</span> runs.items():</span>
+<span id="cb92-19"><a href="#cb92-19" aria-hidden="true" tabindex="-1"></a>    train_acc <span class="op">=</span> model.score(Xtr, y_train)</span>
+<span id="cb92-20"><a href="#cb92-20" aria-hidden="true" tabindex="-1"></a>    test_acc <span class="op">=</span> model.score(Xte, y_test)</span>
+<span id="cb92-21"><a href="#cb92-21" aria-hidden="true" tabindex="-1"></a>    rows.append({</span>
+<span id="cb92-22"><a href="#cb92-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Features"</span>: features,</span>
+<span id="cb92-23"><a href="#cb92-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Model"</span>: name,</span>
+<span id="cb92-24"><a href="#cb92-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Train"</span>: train_acc,</span>
+<span id="cb92-25"><a href="#cb92-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Test"</span>: test_acc,</span>
+<span id="cb92-26"><a href="#cb92-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Gap"</span>: train_acc <span class="op">-</span> test_acc,</span>
+<span id="cb92-27"><a href="#cb92-27" aria-hidden="true" tabindex="-1"></a>    })</span>
 <span id="cb92-28"><a href="#cb92-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-29"><a href="#cb92-29" aria-hidden="true" tabindex="-1"></a><span class="co"># grouped bars: one panel per feature set</span></span>
-<span id="cb92-30"><a href="#cb92-30" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb92-31"><a href="#cb92-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (features, df) <span class="kw">in</span> <span class="bu">zip</span>(axes, scores.groupby(<span class="st">"Features"</span>, sort<span class="op">=</span><span class="va">False</span>)):</span>
-<span id="cb92-32"><a href="#cb92-32" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(df))</span>
-<span id="cb92-33"><a href="#cb92-33" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> <span class="fl">0.38</span></span>
-<span id="cb92-34"><a href="#cb92-34" aria-hidden="true" tabindex="-1"></a>    ax.bar([i <span class="op">-</span> w<span class="op">/</span><span class="dv">2</span> <span class="cf">for</span> i <span class="kw">in</span> x], df[<span class="st">"Train"</span>], width<span class="op">=</span>w, label<span class="op">=</span><span class="st">"Training"</span>)</span>
-<span id="cb92-35"><a href="#cb92-35" aria-hidden="true" tabindex="-1"></a>    ax.bar([i <span class="op">+</span> w<span class="op">/</span><span class="dv">2</span> <span class="cf">for</span> i <span class="kw">in</span> x], df[<span class="st">"Test"</span>], width<span class="op">=</span>w, label<span class="op">=</span><span class="st">"Test"</span>)</span>
-<span id="cb92-36"><a href="#cb92-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (tr, te) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(df[<span class="st">"Train"</span>], df[<span class="st">"Test"</span>])):</span>
-<span id="cb92-37"><a href="#cb92-37" aria-hidden="true" tabindex="-1"></a>        ax.text(i <span class="op">-</span> w<span class="op">/</span><span class="dv">2</span>, tr <span class="op">+</span> <span class="fl">0.01</span>, <span class="ss">f"</span><span class="sc">{</span>tr<span class="sc">:.3f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb92-38"><a href="#cb92-38" aria-hidden="true" tabindex="-1"></a>        ax.text(i <span class="op">+</span> w<span class="op">/</span><span class="dv">2</span>, te <span class="op">+</span> <span class="fl">0.01</span>, <span class="ss">f"</span><span class="sc">{</span>te<span class="sc">:.3f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb92-39"><a href="#cb92-39" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks(<span class="bu">list</span>(x))</span>
-<span id="cb92-40"><a href="#cb92-40" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels(df[<span class="st">"Model"</span>], rotation<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb92-41"><a href="#cb92-41" aria-hidden="true" tabindex="-1"></a>    ax.set_title(features)</span>
-<span id="cb92-42"><a href="#cb92-42" aria-hidden="true" tabindex="-1"></a>    ax.set_ylim(<span class="dv">0</span>, <span class="fl">1.1</span>)</span>
-<span id="cb92-43"><a href="#cb92-43" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb92-44"><a href="#cb92-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-45"><a href="#cb92-45" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Accuracy"</span>)</span>
-<span id="cb92-46"><a href="#cb92-46" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
-<span id="cb92-47"><a href="#cb92-47" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb92-48"><a href="#cb92-48" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"./figs/accuracy_train_vs_test.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
-<span id="cb92-49"><a href="#cb92-49" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb92-29"><a href="#cb92-29" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pd.DataFrame(rows)</span>
+<span id="cb92-30"><a href="#cb92-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores.<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb92-31"><a href="#cb92-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-32"><a href="#cb92-32" aria-hidden="true" tabindex="-1"></a><span class="co"># grouped bars: one panel per feature set</span></span>
+<span id="cb92-33"><a href="#cb92-33" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb92-34"><a href="#cb92-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (features, df) <span class="kw">in</span> <span class="bu">zip</span>(axes, scores.groupby(<span class="st">"Features"</span>, sort<span class="op">=</span><span class="va">False</span>)):</span>
+<span id="cb92-35"><a href="#cb92-35" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(df))</span>
+<span id="cb92-36"><a href="#cb92-36" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> <span class="fl">0.38</span></span>
+<span id="cb92-37"><a href="#cb92-37" aria-hidden="true" tabindex="-1"></a>    ax.bar([i <span class="op">-</span> w<span class="op">/</span><span class="dv">2</span> <span class="cf">for</span> i <span class="kw">in</span> x], df[<span class="st">"Train"</span>], width<span class="op">=</span>w, label<span class="op">=</span><span class="st">"Training"</span>)</span>
+<span id="cb92-38"><a href="#cb92-38" aria-hidden="true" tabindex="-1"></a>    ax.bar([i <span class="op">+</span> w<span class="op">/</span><span class="dv">2</span> <span class="cf">for</span> i <span class="kw">in</span> x], df[<span class="st">"Test"</span>], width<span class="op">=</span>w, label<span class="op">=</span><span class="st">"Test"</span>)</span>
+<span id="cb92-39"><a href="#cb92-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (tr, te) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(df[<span class="st">"Train"</span>], df[<span class="st">"Test"</span>])):</span>
+<span id="cb92-40"><a href="#cb92-40" aria-hidden="true" tabindex="-1"></a>        ax.text(i <span class="op">-</span> w<span class="op">/</span><span class="dv">2</span>, tr <span class="op">+</span> <span class="fl">0.01</span>, <span class="ss">f"</span><span class="sc">{</span>tr<span class="sc">:.3f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb92-41"><a href="#cb92-41" aria-hidden="true" tabindex="-1"></a>        ax.text(i <span class="op">+</span> w<span class="op">/</span><span class="dv">2</span>, te <span class="op">+</span> <span class="fl">0.01</span>, <span class="ss">f"</span><span class="sc">{</span>te<span class="sc">:.3f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb92-42"><a href="#cb92-42" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks(<span class="bu">list</span>(x))</span>
+<span id="cb92-43"><a href="#cb92-43" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels(df[<span class="st">"Model"</span>], rotation<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb92-44"><a href="#cb92-44" aria-hidden="true" tabindex="-1"></a>    ax.set_title(features)</span>
+<span id="cb92-45"><a href="#cb92-45" aria-hidden="true" tabindex="-1"></a>    ax.set_ylim(<span class="dv">0</span>, <span class="fl">1.1</span>)</span>
+<span id="cb92-46"><a href="#cb92-46" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb92-47"><a href="#cb92-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-48"><a href="#cb92-48" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Accuracy"</span>)</span>
+<span id="cb92-49"><a href="#cb92-49" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
+<span id="cb92-50"><a href="#cb92-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb92-51"><a href="#cb92-51" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"./figs/accuracy_train_vs_test.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb92-52"><a href="#cb92-52" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      Features          Model  Train   Test    Gap
-0     Clinical  Logistic (L2)  0.658  0.710 -0.053
-1     Clinical            SVC  0.663  0.704 -0.041
-2     Clinical  Random Forest  0.683  0.708 -0.025
-3  Expressions  Logistic (L2)  0.721  0.676  0.045
-4  Expressions            SVC  0.803  0.672  0.131
-5  Expressions  Random Forest  0.954  0.649  0.305
-6     Combined  Logistic (L2)  0.727  0.681  0.046
-7     Combined            SVC  0.809  0.668  0.141
-8     Combined  Random Forest  0.968  0.668  0.300</code></pre>
+<pre><code>       Features          Model  Train   Test    Gap
+0      Clinical       Logistic  0.658  0.710 -0.053
+1      Clinical  Logistic (L2)  0.658  0.710 -0.053
+2      Clinical            SVC  0.663  0.704 -0.041
+3      Clinical  Random Forest  0.683  0.708 -0.025
+4   Expressions       Logistic  0.829  0.630  0.199
+5   Expressions  Logistic (L2)  0.721  0.676  0.045
+6   Expressions            SVC  0.803  0.672  0.131
+7   Expressions  Random Forest  0.954  0.649  0.305
+8      Combined       Logistic  0.865  0.641  0.224
+9      Combined  Logistic (L2)  0.727  0.681  0.046
+10     Combined            SVC  0.809  0.668  0.141
+11     Combined  Random Forest  0.968  0.668  0.300</code></pre>
 </div>
 </div>
 <p><img src="./figs/accuracy_train_vs_test.png" class="img-fluid"></p>
 </section>
 <section id="accuracy-different-between-trainning-and-testing-set" class="level3" data-number="3.5.3">
 <h3 data-number="3.5.3" class="anchored" data-anchor-id="accuracy-different-between-trainning-and-testing-set"><span class="header-section-number">3.5.3</span> Accuracy different between trainning and testing set</h3>
-<div id="6505f1de" class="cell" data-execution_count="59">
+<div id="8d31bae4" class="cell" data-execution_count="59">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>fig_gap, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))     <span class="co"># new, separate figure object</span></span>
 <span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>scores[<span class="st">"Label"</span>] <span class="op">=</span> scores[<span class="st">"Features"</span>] <span class="op">+</span> <span class="st">" / "</span> <span class="op">+</span> scores[<span class="st">"Model"</span>]</span>
 <span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>ax.barh(scores[<span class="st">"Label"</span>], scores[<span class="st">"Gap"</span>])</span>
