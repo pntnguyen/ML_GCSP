@@ -61,31 +61,19 @@ data[clinical_documented_cols].head()
 |---|--|--------------|
 | patient_id | object | Patient ID |
 | age_at_diagnosis | float | Age of the patient at diagnosis time |
-| chemotherapy | int | Whether or not the patient had chemotherapy as a treatment (yes/no) |
 | er_status | object | Cancer cells are positive or negative for estrogen receptors |
 | her2_status | object | Whether the cancer is positive or negative for HER2 |
+| pr_status | object | Cancer cells are positive or negative for progesterone receptors |
+| chemotherapy | int | Whether or not the patient had chemotherapy as a treatment (yes/no) |
 | hormone_therapy | int | Whether or not the patient had hormonal as a treatment (yes/no) |
+| radio_therapy | int | Whether or not the patient had radio as a treatment (yes/no) |
 | nottingham_prognostic_index | float | It is used to determine prognosis following surgery for breast cancer. Its value is calculated using three pathological criteria: the size of the tumour; the number of involved lymph nodes; and the grade of the tumour. |
 | overall_survival_months | float | Duration from the time of the intervention to death |
 | overall_survival | object | Target variable wether the patient is alive of dead. |
-| pr_status | object | Cancer cells are positive or negative for progesterone receptors |
-| radio_therapy | int | Whether or not the patient had radio as a treatment (yes/no) |
+| death_from_cancer | int | Wether the patient's death was due to cancer or not (yes/no) |
 | tumor_size | float | Tumor size measured by imaging techniques |
 | tumor_stage | float | Stage of the cancer based on the involvement of surrounding structures, lymph nodes and distant spread |
-| death_from_cancer | int | Wether the patient's death was due to cancer or not (yes/no) |
 
-We select the outcome is `overall_survival` with the `death_from_cancer` to confirm the labels of binary value
-
-```{python}
-data[['overall_survival','death_from_cancer']].head()
-```
-
-So the data was indexed 1 is living, 0 is dead. It quite abnormal, so we recode 
-
-```{python}
-data["surv"] = np.where(data["overall_survival"] == 1, 0, 1)
-data[['overall_survival','death_from_cancer','surv']].head()
-```
 
 Skim clinical variables
 
